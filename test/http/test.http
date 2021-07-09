@@ -1,0 +1,15 @@
+### http测试
+
+### 
+POST http://localhost:8080/login 
+HEAD :
+Content-Type: application/json
+
+{
+  "username":"admin",
+  "password":"admin123",
+  "code":56,
+  "uuid":23123
+}
+###
+POST 
