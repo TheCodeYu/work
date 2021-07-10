@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:work/config/rx_config.dart';
 import 'package:work/constants/cons.dart';
 
 import 'package:flutter/material.dart';

@@ -6,18 +6,23 @@ class GlobalState extends Equatable {
   final bool showBackGround;
   final int codeStyleIndex;
   final int itemStyleIndex;
-  final Locale locale;
+  final Locale? locale;
   final AppUI? appUI;
-
-  GlobalState(
-      {this.appUI,
-      this.fontFamily = 'ComicNeue',
-      this.themeColor = Colors.blue,
-      this.showBackGround = true,
-      this.codeStyleIndex = 0,
-      this.itemStyleIndex = 0,
-      this.locale = const Locale.fromSubtags(
-          languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN')});
+  final double textScaleFactor;
+  final TargetPlatform platform;
+  final ThemeMode themeMode;
+  GlobalState({
+    this.appUI,
+    this.fontFamily = 'ComicNeue',
+    this.themeColor = Colors.blue,
+    this.showBackGround = true,
+    this.codeStyleIndex = 0,
+    this.itemStyleIndex = 0,
+    this.locale,
+    this.textScaleFactor = systemTextScaleFactorOption,
+    this.platform = TargetPlatform.android,
+    this.themeMode = ThemeMode.system,
+  });
   @override
   List<Object?> get props => [
         fontFamily,
@@ -27,6 +32,9 @@ class GlobalState extends Equatable {
         itemStyleIndex,
         locale,
         appUI,
+        textScaleFactor,
+        platform,
+        themeMode
       ];
 
   GlobalState copyWith(
@@ -36,7 +44,10 @@ class GlobalState extends Equatable {
           int? codeStyleIndex,
           int? itemStyleIndex,
           Locale? locale,
-          AppUI? appUI}) =>
+          AppUI? appUI,
+          double? textScaleFactor,
+          TargetPlatform? platform,
+          ThemeMode? themeMode}) =>
       GlobalState(
           fontFamily: fontFamily ?? this.fontFamily,
           themeColor: themeColor ?? this.themeColor,
@@ -44,10 +55,13 @@ class GlobalState extends Equatable {
           codeStyleIndex: codeStyleIndex ?? this.codeStyleIndex,
           itemStyleIndex: itemStyleIndex ?? this.itemStyleIndex,
           locale: locale ?? this.locale,
-          appUI: appUI ?? this.appUI);
+          appUI: appUI ?? this.appUI,
+          textScaleFactor: textScaleFactor ?? this.textScaleFactor,
+          platform: platform ?? this.platform,
+          themeMode: themeMode ?? this.themeMode);
 
   @override
   String toString() {
-    return 'GlobalState{ fontFamily: $fontFamily, themeColor: $themeColor, showBackGround: $showBackGround, codeStyleIndex: $codeStyleIndex, itemStyleIndex: $itemStyleIndex},localeIndex:$locale,appUI:$appUI';
+    return 'GlobalState{fontFamily: $fontFamily, themeColor: $themeColor, showBackGround: $showBackGround, codeStyleIndex: $codeStyleIndex, itemStyleIndex: $itemStyleIndex, locale: $locale, appUI: $appUI, textScaleFactor: $textScaleFactor, platform: $platform, themeMode:$themeMode}';
   }
 }

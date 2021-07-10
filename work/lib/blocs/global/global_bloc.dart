@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:work/storage/app_storage.dart';
 import 'package:work/storage/app_ui.dart';
+import 'package:work/utils/adaptive.dart';
 import 'package:work/utils/log_utils.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';

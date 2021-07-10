@@ -36,9 +36,9 @@ class LogUtil {
       await File(logInfo).create();
     }
     fileInfo = File(logInfo);
-    await fileError?.writeAsString('Badamon @4mychip.com zhouyu',
+    await fileError?.writeAsString('work @4mychip.com zhouyu',
         mode: FileMode.append);
-    await fileInfo?.writeAsString('Badamon @4mychip.com zhouyu',
+    await fileInfo?.writeAsString('work @4mychip.com zhouyu',
         mode: FileMode.append);
   }
 
@@ -51,8 +51,7 @@ class LogUtil {
 
   static info(className, msg) async {
     String datetime = DateTime.now().toString();
-    log('$datetime  [info] [$className]:' + msg);
-
+    print('[$className]:' + msg);
     // await fileInfo?.writeAsString('\n$datetime [$className]:' + msg,
     //     mode: FileMode.append);
   }

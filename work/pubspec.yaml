@@ -15,11 +15,11 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_localized_locales: ^2.0.2
+  animations: ^2.0.1
   rxdart: ^0.27.1 #全局消息处理器
   flutter_bloc: ^7.0.1  #业务逻辑和UI组件分离开。BLoC模式下的应用程序，一般会有全局的BLoC，每一个页面也会对应有一个独立的BLoC
   equatable: ^2.0.3 #相等比较
   shared_preferences: ^2.0.6 # flutter 持久化插件
-  flutter_screenutil: ^5.0.0+2 #屏幕适配
   collection: ^1.15.0
   package_info_plus: ^1.0.3 #包信息
   fl_chart: ^0.36.2 #图形
@@ -29,6 +29,8 @@ dependencies:
   url_strategy: ^0.2.0 #处理web#号问题
   flutter_smart_dialog: ^2.1.6
   adaptive_breakpoints: ^0.0.4
+
+  flutter_gallery_assets: ^1.0.2 #图片
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -44,6 +46,8 @@ flutter:
     - assets/flutter.db
     - assets/os/images/
     - assets/os/tools/
+
+
   fonts: # 配置字体，可配置多个，支持ttf和otf,ttc等字体资源
     - family: IndieFlower #字体名
       fonts:

@@ -1,9 +1,13 @@
 {
-  "app": "Badamon",
+  "app": "风宇软件",
   "@app": {
     "description": "传统的新生程序员问候语"
-  }
-
+  },
+  "titleOverview": "概览",
+  "titleAccounts": "帐号",
+  "titleBills": "帐单",
+  "titleBudgets": "预算",
+  "titleSettings": "设置"
 }
 
 

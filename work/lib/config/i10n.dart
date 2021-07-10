@@ -22,3 +22,6 @@ class FallbackCupertinoLocalisationsDelegate
     return false;
   }
 }
+
+///语言国际化
+locale(context) => AppLocalizations.of(context)!;

@@ -115,7 +115,7 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
           duration: const Duration(milliseconds: 600),
           opacity: _animEnd ? 1.0 : 0.0,
           child: Text(
-            'Badamon',
+            'Feng Yu',
             style: shadowStyle,
           )),
     );
@@ -163,7 +163,7 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
         child: AnimatedOpacity(
             duration: const Duration(milliseconds: 300),
             opacity: _animEnd ? 1.0 : 0.0,
-            child: const Text("Power By zhouyu",
+            child: const Text("Power By FengYu Studio",
                 style: TextStyle(
                     color: Colors.grey,
                     shadows: [

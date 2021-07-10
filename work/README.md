@@ -18,3 +18,4 @@ samples, guidance on mobile development, and a full API reference.
 ### 2021-07-09
 
 create project
+--web-hostname 0.0.0.0 --web-port 8080
