@@ -13,7 +13,7 @@ import com.mychip.work.constant.Constant;
 import com.mychip.work.core.RedisCache;
 import com.mychip.work.config.filter.RepeatedlyRequestWrapper;
 import com.mychip.work.utils.StringUtils;
-import com.mychip.work.utils.HttpHelper;
+import com.mychip.work.utils.http.HttpHelper;
 
 
 /**

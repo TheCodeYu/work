@@ -8,7 +8,7 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
-import com.mychip.work.utils.HttpHelper;
+import com.mychip.work.utils.http.HttpHelper;
 /**
  * name: RepeatedlyRequestWrapper
  * author: Administrator
