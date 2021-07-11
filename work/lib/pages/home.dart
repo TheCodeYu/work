@@ -1,14 +1,21 @@
-import 'package:work/components/icp.dart';
-import 'package:work/components/mobile_nav.dart';
-import 'package:work/config/i10n.dart';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:work/blocs/global/global_bloc.dart';
+import 'package:work/components/icp.dart';
+import 'package:work/components/label_button.dart';
+import 'package:work/components/mobile_nav.dart';
+import 'package:work/components/options_items.dart';
+import 'package:work/config/i10n.dart';
+import 'package:work/constants/my_theme.dart';
+import 'package:work/pages/studio_page.dart';
 import 'package:work/utils/adaptive.dart';
 
 const int tabCount = 5;
 const int turnsToRotateRight = 1;
 const int turnsToRotateLeft = 3;
-const double logoSize=120;
+const double logoSize = 120;
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
   static const String defaultRoute = '/home_page';
@@ -42,13 +49,11 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     final isDesktop = isDisplayDesktop(context);
-
 
     Widget tabBarView = Container();
 
@@ -83,17 +88,17 @@ class _HomePageState extends State<HomePage>
         ],
       );
     } else {
-     tabBarView = MobileNav(
-       destinations: _buildTabs(context, theme),
-       onItemTapped: _onDestinationSelected,
-       selected: _tabController.index,
-       child:  Expanded(
-         child: TabBarView(
-           controller: _tabController,
-           children: _buildTabViews(),
-         ),
-       ),
-     );
+      tabBarView = MobileNav(
+        destinations: _buildTabs(context, theme),
+        onItemTapped: _onDestinationSelected,
+        selected: _tabController.index,
+        child: Expanded(
+          child: TabBarView(
+            controller: _tabController,
+            children: _buildTabViews(),
+          ),
+        ),
+      );
     }
     return Scaffold(
       body: SafeArea(
@@ -110,16 +115,13 @@ class _HomePageState extends State<HomePage>
             highlightColor: Colors.transparent,
           ),
           child: FocusTraversalGroup(
-            policy: OrderedTraversalPolicy(),
-            child: tabBarView
-          ),
+              policy: OrderedTraversalPolicy(), child: tabBarView),
         ),
       ),
     );
   }
 
-
-@override
+  @override
   String? get restorationId => HomePage.defaultRoute;
 
   @override
@@ -176,7 +178,7 @@ class _HomePageState extends State<HomePage>
 
   List<Widget> _buildTabViews() {
     return [
-      TTT(t: "1"),
+      StudioPage(),
       TTT(t: "2"),
       TTT(t: "3"),
       TTT(t: "4"),
@@ -185,12 +187,9 @@ class _HomePageState extends State<HomePage>
   }
 
   void _onDestinationSelected(int index) {
-    _tabController.index=index;
-    setState(() {
-
-    });
+    _tabController.index = index;
+    setState(() {});
   }
-
 }
 
 class TTT extends StatefulWidget {
@@ -219,18 +218,49 @@ class _RallyTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // print(_getLocaleOptions(context));
+    var l = getLocaleDisplayOption(
+        context,
+        BlocProvider.of<GlobalBloc>(context).state.locale ??
+            Locale.fromSubtags(
+                languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'));
     return FocusTraversalOrder(
       order: const NumericFocusOrder(0),
-      child: TabBar(
-        // Setting isScrollable to true prevents the tabs from being
-        // wrapped in [Expanded] widgets, which allows for more
-        // flexible sizes and size animations among tabs.
-        isScrollable: true,
-        labelPadding: EdgeInsets.zero,
-        tabs: tabs,
-        controller: tabController,
-        // This hides the tab indicator.
-        indicatorColor: Colors.transparent,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Container(
+            height: 50,
+            child: Row(
+              children: [
+                MyLabel(
+                  label: Text.rich(TextSpan(text: '注册/登录')),
+                  onPressed: () {},
+                  backgroundColor: MyThemeData.primaryBackground,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                MyLabel(
+                  label: Text(l.title),
+                  onPressed: () {},
+                  backgroundColor: MyThemeData.primaryBackground,
+                ),
+              ],
+            ),
+          ),
+          TabBar(
+            // Setting isScrollable to true prevents the tabs from being
+            // wrapped in [Expanded] widgets, which allows for more
+            // flexible sizes and size animations among tabs.
+            isScrollable: true,
+            labelPadding: EdgeInsets.zero,
+            tabs: tabs,
+            controller: tabController,
+            // This hides the tab indicator.
+            indicatorColor: Colors.transparent,
+          )
+        ],
       ),
     );
   }
@@ -319,7 +349,7 @@ class RallyTabState extends State<RallyTab>
     // units and dividing it into the screen width. Each unexpanded tab is 1
     // unit, and there is always 1 expanded tab which is 1 unit + any extra
     // space determined by the multiplier.
-    final width = MediaQuery.of(context).size.width-logoSize;
+    final width = MediaQuery.of(context).size.width - logoSize;
     const expandedTitleWidthMultiplier = 2;
     final unitWidth = width / (tabCount + expandedTitleWidthMultiplier);
 

@@ -29,6 +29,7 @@ dependencies:
   url_strategy: ^0.2.0 #处理web#号问题
   flutter_smart_dialog: ^2.1.6
   adaptive_breakpoints: ^0.0.4
+  url_launcher: ^6.0.9
 
   flutter_gallery_assets: ^1.0.2 #图片
 dev_dependencies:

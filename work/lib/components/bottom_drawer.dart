@@ -53,7 +53,7 @@ class BottomDrawer extends StatelessWidget {
                 trailing ?? const SizedBox(height: 4),
               ],
             ),
-           // bottomNavigationBar:  ICP(),
+            bottomNavigationBar:  ICP(),
 
           )
       )

@@ -75,13 +75,10 @@ class MyApp extends StatelessWidget {
             /// [supportedLocales] : supportedLocales
             ///iOS上语言表示不一样 [en_US, zh_CN]  zh_Hans_CN languageCode-scriptCode-countryCode
             (Locale? _locale, Iterable<Locale>? supportedLocales) {
-
           ///这个判断会使手机端访问出问题 zh_cn 而不是Zh_CN
           // if (_locale != null) {
           //   return _locale;
           // }
-
-
           Locale locale = Locale.fromSubtags(
               languageCode: 'zh',
               scriptCode: 'Hans',
@@ -96,6 +93,7 @@ class MyApp extends StatelessWidget {
                   countryCode: l.countryCode);
             }
           });
+
           return locale;
         },
         onGenerateRoute: RouterConfig.onGenerateRoute,

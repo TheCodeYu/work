@@ -4,7 +4,11 @@ import 'dart:ui' as ui;
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:work/blocs/global/global_bloc.dart';
 import 'package:work/components/bottom_drawer.dart';
+import 'package:work/components/label_button.dart';
+import 'package:work/components/options_items.dart';
 import 'package:work/components/waterfall_notched.rectangle.dart';
 import 'package:work/constants/my_theme.dart';
 import 'package:work/pages/home.dart';
@@ -439,6 +443,10 @@ class _AnimatedBottomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var l = getLocaleDisplayOption(context, BlocProvider.of<GlobalBloc>(context).state.locale??Locale.fromSubtags(
+        languageCode: 'zh',
+        scriptCode: 'Hans',
+        countryCode: 'CN'));
     bottomAppBarController.forward();
     return SizeTransition(
       sizeFactor: bottomAppBarCurve,
@@ -505,20 +513,12 @@ class _AnimatedBottomAppBar extends StatelessWidget {
                             ? Align(
                                 key: UniqueKey(),
                                 alignment: Alignment.centerRight,
-                                child: IconButton(
-                                  icon: const Icon(Icons.settings),
-                                  color: MyThemeData.gray,
-                                  onPressed: () {},
-                                ),
+                                child: MyLabel(label: Text(l.title), onPressed: (){},backgroundColor: MyThemeData.primaryBackground,),
                               )
                             : Align(
                                 alignment: Alignment.centerRight,
-                                child: IconButton(
-                                  key: const ValueKey('ReplySearch'),
-                                  icon: const Icon(Icons.search),
-                                  color: MyThemeData.gray,
-                                  onPressed: () {},
-                                ),
+                                child: MyLabel(label: Text.rich(TextSpan(text: '注册/登录')), onPressed: (){
+                                },backgroundColor: MyThemeData.primaryBackground,),
                               )),
                   ),
                 ),
