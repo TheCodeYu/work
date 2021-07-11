@@ -10,7 +10,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.sql.DataSource;
 
-import com.mychip.work.enums.DataSourceType;
+import com.mychip.work.constant.DataSourceType;
 import com.mychip.work.utils.SpringUtils;
 import com.mychip.work.datasource.DruidProperties;
 import com.mychip.work.datasource.DynamicDataSource;

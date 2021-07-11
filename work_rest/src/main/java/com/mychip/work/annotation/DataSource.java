@@ -6,7 +6,7 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import com.mychip.work.enums.DataSourceType;
+import com.mychip.work.constant.DataSourceType;
 
 /**
  * name: DataSource

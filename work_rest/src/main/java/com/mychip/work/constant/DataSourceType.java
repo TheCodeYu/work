@@ -1,4 +1,4 @@
-package com.mychip.work.enums;
+package com.mychip.work.constant;
 
 /**
  * name: DataSourceType
