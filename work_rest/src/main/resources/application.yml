@@ -2,19 +2,20 @@
 # 项目相关配置
 work:
   # 名称
-  name: work
+  name: 风宇软件
   # 版本
   version: 0.0.1
   # 版权年份
-  copyrightYear: 2021
-  # 实例演示开关
-  demoEnabled: true
+  copyrightYear: 2021-2022
   # 文件路径 示例（ Windows配置D:/crm/uploadPath，Linux配置 /home/crm/uploadPath）
   profile: D:/crm/uploadPath
   # 获取ip地址开关
   addressEnabled: false
   # 验证码类型 math 数组计算 char 字符验证
   captchaType: math
+  icp: 鄂ICP备2021012206号
+  police: 鄂ICP备2021012206号
+
 
 # 插件的配置
 plugin:
