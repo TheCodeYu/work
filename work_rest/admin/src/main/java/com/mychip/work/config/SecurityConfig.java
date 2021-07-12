@@ -89,7 +89,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 过滤请求
                 .authorizeRequests()
                 // 对于登录login 验证码captchaImage 允许匿名访问
-                .antMatchers("/login", "/captchaImage").anonymous()
+                //.antMatchers("/login", "/captchaImage").anonymous()
+                .antMatchers("/anonymous/**").anonymous()
                 .antMatchers(
                         HttpMethod.GET,
                         "/*.html",
@@ -98,10 +99,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js"
                 ).permitAll()
                 .antMatchers("/profile/**").anonymous()
-                .antMatchers("/common/download**").anonymous()
-                .antMatchers("/common/download/resource**").anonymous()
-                .antMatchers("/swagger-ui.html").anonymous()
-                .antMatchers("/swagger-resources/**").anonymous()
                 .antMatchers("/webjars/**").anonymous()
                 .antMatchers("/*/api-docs").anonymous()
                 .antMatchers("/druid/**").anonymous()
@@ -115,8 +112,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 添加CORS filter
         http.addFilterBefore(corsFilter, LogoutFilter.class);
         /// [todo]    springboot 2.5 不支持这么写
-        //http.addFilterBefore(corsFilter, JwtAuthenticationTokenFilter.class);
-        http.addFilterAfter(authenticationTokenFilter,CorsFilter.class);
+        http.addFilterBefore(corsFilter, JwtAuthenticationTokenFilter.class);
+        //http.addFilterAfter(authenticationTokenFilter,CorsFilter.class);
 
 
     }
