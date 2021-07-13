@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:work/blocs/global/global_bloc.dart';
+import 'package:work/components/button/my_tool_tip.dart';
 import 'package:work/components/icp.dart';
 import 'package:work/components/label_button.dart';
 import 'package:work/components/mobile_nav.dart';
@@ -131,9 +132,12 @@ class _HomePageState extends State<HomePage>
 
   List<RallyTab> _buildTabs(BuildContext context, ThemeData theme,
       [bool isVertical = false]) {
+    var style = isDisplayDesktop(context)
+        ? TextStyle(color: Colors.white, fontSize: 24)
+        : Theme.of(context).textTheme.subtitle1;
     return [
       RallyTab(
-        theme: theme,
+        style: style!,
         iconData: Icons.pie_chart,
         title: locale(context).titleOverview,
         tabIndex: 0,
@@ -141,7 +145,7 @@ class _HomePageState extends State<HomePage>
         isVertical: isVertical,
       ),
       RallyTab(
-        theme: theme,
+        style: style,
         iconData: Icons.attach_money,
         title: locale(context).titleAccounts,
         tabIndex: 1,
@@ -149,7 +153,7 @@ class _HomePageState extends State<HomePage>
         isVertical: isVertical,
       ),
       RallyTab(
-        theme: theme,
+        style: style,
         iconData: Icons.money_off,
         title: locale(context).titleBills,
         tabIndex: 2,
@@ -157,7 +161,7 @@ class _HomePageState extends State<HomePage>
         isVertical: isVertical,
       ),
       RallyTab(
-        theme: theme,
+        style: style,
         iconData: Icons.table_chart,
         title: locale(context).titleBudgets,
         tabIndex: 3,
@@ -165,7 +169,7 @@ class _HomePageState extends State<HomePage>
         isVertical: isVertical,
       ),
       RallyTab(
-        theme: theme,
+        style: style,
         iconData: Icons.settings,
         title: locale(context).titleSettings,
         tabIndex: 4,
@@ -233,6 +237,10 @@ class _RallyTabBar extends StatelessWidget {
             child: Row(
               children: [
                 ///logo放这里
+                MyTooltip(
+                  message: Icon(Icons.ac_unit_sharp),
+                  child: Text.rich(TextSpan(text: '注册/登录')),
+                ),
                 MyLabel(
                   label: Text.rich(TextSpan(text: '注册/登录')),
                   onPressed: () {},
@@ -247,16 +255,20 @@ class _RallyTabBar extends StatelessWidget {
               ],
             ),
           ),
-          TabBar(
-            // Setting isScrollable to true prevents the tabs from being
-            // wrapped in [Expanded] widgets, which allows for more
-            // flexible sizes and size animations among tabs.
-            isScrollable: true,
-            labelPadding: EdgeInsets.zero,
-            tabs: tabs,
-            controller: tabController,
-            // This hides the tab indicator.
-            indicatorColor: Colors.transparent,
+          Material(
+            color: Color(0xff2196f3).withOpacity(0.8),
+            child: TabBar(
+              // Setting isScrollable to true prevents the tabs from being
+              // wrapped in [Expanded] widgets, which allows for more
+              // flexible sizes and size animations among tabs.
+
+              isScrollable: true,
+              labelPadding: EdgeInsets.zero,
+              tabs: tabs,
+              controller: tabController,
+              // This hides the tab indicator.
+              indicatorColor: Colors.white,
+            ),
           )
         ],
       ),
@@ -266,13 +278,13 @@ class _RallyTabBar extends StatelessWidget {
 
 class RallyTab extends StatefulWidget {
   RallyTab({
-    required ThemeData theme,
+    required TextStyle style,
     required IconData iconData,
     required String title,
     required int tabIndex,
     required TabController tabController,
     required this.isVertical,
-  })  : titleText = Text(title, style: theme.textTheme.button),
+  })  : titleText = Text(title, style: style),
         isExpanded = tabController.index == tabIndex,
         tabIndex = tabIndex,
         icon = Icon(iconData, semanticLabel: title);

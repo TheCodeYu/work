@@ -8,26 +8,22 @@ class MyThemeData {
   static final Color _lightFocusColor = Colors.black.withOpacity(0.12);
   static final Color _darkFocusColor = Colors.white.withOpacity(0.12);
 
-  static ThemeData lightThemeData(context, state) =>
-      themeData(context, state, lightColorScheme, _lightFocusColor);
+  static ThemeData lightThemeData(state) =>
+      themeData(state, lightColorScheme, _lightFocusColor);
 
-  static ThemeData darkThemeData(context, state) =>
-      themeData(context, state, darkColorScheme, _darkFocusColor);
+  static ThemeData darkThemeData(state) =>
+      themeData(state, darkColorScheme, _darkFocusColor);
 
-  static ThemeData themeData(BuildContext context, GlobalState state,
-      ColorScheme colorScheme, Color focusColor) {
+  static ThemeData themeData(
+      GlobalState state, ColorScheme colorScheme, Color focusColor) {
     return ThemeData(
       colorScheme: colorScheme,
-      textTheme: _textTheme(state).apply(bodyColor: const Color(0xFF030303)),
-      primaryColor: const Color(0xFF030303),
-      appBarTheme: AppBarTheme(
-        textTheme: _textTheme(state).apply(bodyColor: colorScheme.onPrimary),
-        color: colorScheme.background,
-        elevation: 0,
-        iconTheme: IconThemeData(color: const Color(0xFF030303)),
-        brightness: colorScheme.brightness,
-      ),
-      iconTheme: IconThemeData(color: const Color(0xFF030303)),
+      primarySwatch: Colors.blue,
+      fontFamily: state.fontFamily,
+      textTheme: _textTheme.apply(bodyColor: colorScheme.onPrimary),
+      primaryColor: colorScheme.onPrimary,
+      tabBarTheme: TabBarTheme(labelColor: Colors.white),
+      iconTheme: IconThemeData(color: colorScheme.onPrimary),
       canvasColor: colorScheme.background,
       scaffoldBackgroundColor: colorScheme.background,
       highlightColor: Colors.transparent,
@@ -38,14 +34,13 @@ class MyThemeData {
           _lightFillColor.withOpacity(0.80),
           _darkFillColor,
         ),
-        contentTextStyle:
-            _textTheme(state).subtitle1!.apply(color: _darkFillColor),
+        contentTextStyle: _textTheme.subtitle1!.apply(color: _darkFillColor),
       ),
     );
   }
 
   static const ColorScheme lightColorScheme = ColorScheme(
-    primary: Color(0xFFEFF3F3),
+    primary: Colors.blue,
     primaryVariant: Color(0xFF117378),
     secondary: Color(0xFFEFF3F3),
     secondaryVariant: Color(0xFFFAFBFB),
@@ -81,31 +76,17 @@ class MyThemeData {
   static const _semiBold = FontWeight.w600;
   static const _bold = FontWeight.w700;
 
-  static TextTheme _textTheme(GlobalState state) => TextTheme(
-        headline4: TextStyle(
-            fontFamily: state.fontFamily, fontWeight: _bold, fontSize: 20.0),
-        caption: TextStyle(
-            fontFamily: state.fontFamily,
-            fontWeight: _semiBold,
-            fontSize: 16.0),
-        headline5: TextStyle(
-            fontFamily: state.fontFamily, fontWeight: _medium, fontSize: 16.0),
-        subtitle1: TextStyle(
-            fontFamily: state.fontFamily, fontWeight: _medium, fontSize: 16.0),
-        overline: TextStyle(
-            fontFamily: state.fontFamily, fontWeight: _medium, fontSize: 12.0),
-        bodyText1: TextStyle(
-            fontFamily: state.fontFamily, fontWeight: _regular, fontSize: 14.0),
-        subtitle2: TextStyle(
-            fontFamily: state.fontFamily, fontWeight: _medium, fontSize: 14.0),
-        bodyText2: TextStyle(
-            fontFamily: state.fontFamily, fontWeight: _regular, fontSize: 16.0),
-        headline6: TextStyle(
-            fontFamily: state.fontFamily, fontWeight: _bold, fontSize: 16.0),
-        button: TextStyle(
-            fontFamily: state.fontFamily,
-            fontWeight: _semiBold,
-            fontSize: 14.0),
+  static get _textTheme => TextTheme(
+        headline4: TextStyle(fontWeight: _bold, fontSize: 20.0),
+        caption: TextStyle(fontWeight: _semiBold, fontSize: 16.0),
+        headline5: TextStyle(fontWeight: _medium, fontSize: 16.0),
+        subtitle1: TextStyle(fontWeight: _medium, fontSize: 16.0),
+        overline: TextStyle(fontWeight: _medium, fontSize: 12.0),
+        bodyText1: TextStyle(fontWeight: _regular, fontSize: 14.0),
+        subtitle2: TextStyle(fontWeight: _medium, fontSize: 14.0),
+        bodyText2: TextStyle(fontWeight: _regular, fontSize: 16.0),
+        headline6: TextStyle(fontWeight: _bold, fontSize: 16.0),
+        button: TextStyle(fontWeight: _semiBold, fontSize: 14.0),
       ).apply(
         displayColor: Colors.white,
         bodyColor: Colors.white,

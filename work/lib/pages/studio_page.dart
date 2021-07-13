@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:work/components/icp.dart';
 import 'package:work/utils/adaptive.dart';
 
 ///首页
@@ -15,15 +14,13 @@ class StudioPage extends StatefulWidget {
 }
 
 class _StudioPageState extends State<StudioPage> {
-
   @override
   void initState() {
     super.initState();
-
   }
+
   @override
   Widget build(BuildContext context) {
-
     if (isDisplayDesktop(context)) {
       const sortKeyName = 'Overview';
       return SingleChildScrollView(
@@ -40,19 +37,25 @@ class _StudioPageState extends State<StudioPage> {
                   child: const _OverviewGrid(spacing: 24),
                 ),
               ),
-              const SizedBox(width: 24,height: 1000,),
-               Container(width: 24,height: 1000,child: Text('11111'),color: Colors.white,),
+              const SizedBox(
+                width: 24,
+                height: 1000,
+              ),
+              Container(
+                width: 24,
+                height: 1000,
+                child: Text('11111'),
+                color: Colors.white,
+              ),
               Flexible(
                 flex: 3,
                 child: SizedBox(
                   width: 400,
                   child: Semantics(
                     sortKey: const OrdinalSortKey(2, name: sortKeyName),
-
                   ),
                 ),
               ),
-
             ],
           ),
         ),
@@ -64,8 +67,12 @@ class _StudioPageState extends State<StudioPage> {
           padding: const EdgeInsets.symmetric(vertical: 12),
           child: Column(
             children: [
-
-              Container(width: 24,height: 1000,child: Text('11111'),color: Colors.white,),
+              Container(
+                width: 24,
+                height: 1000,
+                child: Text('11111'),
+                color: Colors.white,
+              ),
               const _OverviewGrid(spacing: 12),
             ],
           ),
@@ -75,7 +82,6 @@ class _StudioPageState extends State<StudioPage> {
   }
 }
 
-
 class _OverviewGrid extends StatelessWidget {
   const _OverviewGrid({Key? key, required this.spacing}) : super(key: key);
 
@@ -83,9 +89,7 @@ class _OverviewGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return LayoutBuilder(builder: (context, constraints) {
-
       // Only display multiple columns when the constraints allow it and we
       // have a regular text scale factor.
       const minWidthForTwoColumns = 600;
@@ -101,14 +105,11 @@ class _OverviewGrid extends StatelessWidget {
         children: [
           SizedBox(
             width: boxWidth,
-
           ),
           if (hasMultipleColumns) SizedBox(width: spacing),
           SizedBox(
             width: boxWidth,
-
           ),
-
         ],
       );
     });

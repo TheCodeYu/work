@@ -25,7 +25,7 @@ class _MyMyLabelState extends State<MyLabel> {
 
   void _exit(PointerExitEvent details) {
     setState(() {
-      chipColor = Theme.of(context).primaryColorLight;
+      chipColor = Theme.of(context).primaryColor;
     });
   }
 

@@ -24,6 +24,7 @@ main() {
 
 class MyApp extends StatelessWidget {
   final sharedZAxisTransitionBuilder = const SharedAxisPageTransitionsBuilder(
+    fillColor: Colors.blue,
     transitionType: SharedAxisTransitionType.scaled,
   );
   @override
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
         onGenerateTitle: (context) => AppLocalizations.of(context)!.app,
         supportedLocales: AppLocalizations.supportedLocales,
         themeMode: state.themeMode,
-        theme: MyThemeData.lightThemeData(context, state).copyWith(
+        theme: MyThemeData.lightThemeData(state).copyWith(
           platform: state.platform,
           pageTransitionsTheme: PageTransitionsTheme(
             builders: {
@@ -55,7 +56,7 @@ class MyApp extends StatelessWidget {
             },
           ),
         ),
-        darkTheme: MyThemeData.darkThemeData(context, state).copyWith(
+        darkTheme: MyThemeData.darkThemeData(state).copyWith(
           platform: state.platform,
         ),
         localizationsDelegates: [

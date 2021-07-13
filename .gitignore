@@ -8,7 +8,7 @@
 .buildlog/
 .history
 .svn/
-
+.apt_generated_tests/
 # IntelliJ related
 *.iml
 *.ipr

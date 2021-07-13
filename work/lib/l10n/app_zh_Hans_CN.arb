@@ -3,11 +3,11 @@
   "@app": {
     "description": "传统的新生程序员问候语"
   },
-  "titleOverview": "概览",
-  "titleAccounts": "帐号",
-  "titleBills": "帐单",
-  "titleBudgets": "预算",
-  "titleSettings": "设置"
+  "titleOverview": "首页",
+  "titleAccounts": "产品与方案",
+  "titleBills": "服务与支持",
+  "titleBudgets": "资料与下载",
+  "titleSettings": "关于风宇"
 }
 
 
