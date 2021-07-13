@@ -9,44 +9,44 @@ class MyLabel extends StatefulWidget {
     this.backgroundColor,
   }) : super(key: key);
   final Widget label;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Color? backgroundColor;
 
   _MyMyLabelState createState() => _MyMyLabelState();
 }
 
 class _MyMyLabelState extends State<MyLabel> {
-  late Color chipColor;
+  Color chipColor = Colors.white;
   void _enter(PointerEnterEvent details) {
     setState(() {
-      chipColor = Color.fromRGBO(0, 0, 255, 0.7);
+      chipColor = Color.fromRGBO(0, 0, 255, 1);
     });
   }
 
   void _exit(PointerExitEvent details) {
     setState(() {
-      chipColor = Theme.of(context).primaryColor;
+      chipColor = Colors.white;
     });
   }
 
   void _hover(PointerHoverEvent details) {
     setState(() {
-      chipColor = Color.fromRGBO(0, 0, 255, 0.7);
+      chipColor = Color.fromRGBO(0, 0, 255, 1);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    chipColor = Theme.of(context).primaryColorLight;
+    //chipColor = Theme.of(context).primaryColorLight;
     return MouseRegion(
       onEnter: _enter,
       onExit: _exit,
       onHover: _hover,
       child: RawChip(
         label: widget.label,
-        elevation: 0,
-        pressElevation: 0, //点击时凸起效果
-        backgroundColor: widget.backgroundColor,
+        elevation: 2,
+        pressElevation: 8, //点击时凸起效果
+        backgroundColor: widget.backgroundColor ?? Colors.blue,
         onPressed: widget.onPressed,
         labelStyle: TextStyle(
           color: chipColor,

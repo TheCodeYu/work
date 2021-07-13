@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +16,6 @@ import 'package:work/utils/adaptive.dart';
 const int tabCount = 5;
 const int turnsToRotateRight = 1;
 const int turnsToRotateLeft = 3;
-const double logoSize = 120;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -49,6 +50,34 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
+  Widget language() {
+    var pro = BlocProvider.of<GlobalBloc>(context);
+    var l = pro.state.locale ?? Locale.fromSubtags(languageCode: 'zh');
+
+    LinkedHashMap<Locale, DisplayOption> temp = getLocaleOptions(context);
+    List<PopupMenuItem<Locale>> list = List.empty(growable: true);
+    temp.forEach((key, value) {
+      list.add(CheckedPopupMenuItem<Locale>(
+        checked: key == l,
+        padding: EdgeInsets.zero,
+        value: key,
+        child: MyLabel(
+          label: Text(value.title),
+          onPressed: null,
+        ),
+      ));
+    });
+    return new PopupMenuButton<Locale>(
+        child: MyLabel(
+          label: Text(getLocaleDisplayOption(context, l).title),
+          onPressed: null,
+        ),
+        itemBuilder: (BuildContext context) => list,
+        onSelected: (Locale value) {
+          pro.add(EventupdateSetting(value));
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -61,23 +90,10 @@ class _HomePageState extends State<HomePage>
     if (isDesktop) {
       tabBarView = Column(
         children: [
-          Row(
-            children: [
-              ExcludeSemantics(
-                child: SizedBox(
-                  height: logoSize,
-                  width: logoSize,
-                  child: Image.asset(
-                    'images/logo.png',
-                  ),
-                ),
-              ),
-              _RallyTabBar(
-                tabs: _buildTabs(context, theme),
-                tabController: _tabController,
-              ),
-            ],
-          ),
+          _RallyTabBar(
+              tabs: _buildTabs(context, theme),
+              tabController: _tabController,
+              language: language()),
           Expanded(
             child: TabBarView(
               controller: _tabController,
@@ -92,6 +108,7 @@ class _HomePageState extends State<HomePage>
         destinations: _buildTabs(context, theme),
         onItemTapped: _onDestinationSelected,
         selected: _tabController.index,
+        language: language(),
         child: Expanded(
           child: TabBarView(
             controller: _tabController,
@@ -212,21 +229,21 @@ class _TTTState extends State<TTT> {
 }
 
 class _RallyTabBar extends StatelessWidget {
-  const _RallyTabBar(
-      {Key? key, required this.tabs, required this.tabController})
+  _RallyTabBar(
+      {Key? key,
+      required this.tabs,
+      required this.tabController,
+      required this.language})
       : super(key: key);
 
   final List<Widget> tabs;
   final TabController tabController;
+  final Widget language;
 
   @override
   Widget build(BuildContext context) {
     // print(_getLocaleOptions(context));
-    var l = getLocaleDisplayOption(
-        context,
-        BlocProvider.of<GlobalBloc>(context).state.locale ??
-            Locale.fromSubtags(
-                languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'));
+
     return FocusTraversalOrder(
       order: const NumericFocusOrder(0),
       child: Column(
@@ -234,24 +251,35 @@ class _RallyTabBar extends StatelessWidget {
         children: [
           Container(
             height: 50,
+            padding: EdgeInsets.only(bottom: 5.0),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 ///logo放这里
                 MyTooltip(
-                  message: Icon(Icons.ac_unit_sharp),
-                  child: Text.rich(TextSpan(text: '注册/登录')),
-                ),
-                MyLabel(
-                  label: Text.rich(TextSpan(text: '注册/登录')),
-                  onPressed: () {},
+                  padding: EdgeInsets.zero,
+                  message: Image.asset(
+                    'images/qrcode_344.jpg',
+                    width: 120,
+                    height: 120,
+                  ),
+                  child: MyLabel(
+                    label: Text.rich(TextSpan(text: locale(context).public)),
+                    onPressed: () {},
+                  ),
                 ),
                 SizedBox(
                   width: 5,
                 ),
                 MyLabel(
-                  label: Text(l.title),
+                  label: Text.rich(TextSpan(text: locale(context).register)),
                   onPressed: () {},
                 ),
+                SizedBox(
+                  width: 5,
+                ),
+                language
               ],
             ),
           ),
@@ -359,7 +387,7 @@ class RallyTabState extends State<RallyTab>
     // units and dividing it into the screen width. Each unexpanded tab is 1
     // unit, and there is always 1 expanded tab which is 1 unit + any extra
     // space determined by the multiplier.
-    final width = MediaQuery.of(context).size.width - logoSize;
+    final width = MediaQuery.of(context).size.width;
     const expandedTitleWidthMultiplier = 2;
     final unitWidth = width / (tabCount + expandedTitleWidthMultiplier);
 

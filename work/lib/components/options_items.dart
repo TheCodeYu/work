@@ -323,7 +323,7 @@ class AnimateSettingsListItems extends StatelessWidget {
 }
 
 DisplayOption getLocaleDisplayOption(BuildContext context, Locale locale) {
-  // TODO: gsw, fil, and es_419 aren't in flutter_localized_countries' dataset
+  ///[todo]
   final localeCode = locale.toString();
   final localeName = LocaleNames.of(context)!.nameOf(localeCode);
   if (localeName != null) {
@@ -351,7 +351,7 @@ DisplayOption getLocaleDisplayOption(BuildContext context, Locale locale) {
 
 /// Create a sorted — by native name – map of supported locales to their
 /// intended display string, with a system option as the first element.
-LinkedHashMap<Locale, DisplayOption> _getLocaleOptions(BuildContext context) {
+LinkedHashMap<Locale, DisplayOption> getLocaleOptions(BuildContext context) {
   var localeOptions = LinkedHashMap<Locale, DisplayOption>.of({
     //Locale('system'): DisplayOption(locale(context).auto),
   });

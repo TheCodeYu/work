@@ -1,10 +1,14 @@
 {
-  "app": "Badamon",
+  "app": "Feng Yu",
   "@app": {
-    "description": "标题"
-  }
+    "description": "传统的新生程序员问候语"
+  },
+  "titleOverview": "Home",
+  "titleAccounts": "Products and Solutions",
+  "titleBills": "Service and Support",
+  "titleBudgets": "Information and Download",
+  "titleSettings": "About Fengyu",
+  "public": "WeChat Official Account",
+  "register": "Register and Sign in"
+
 }
-
-
-
-

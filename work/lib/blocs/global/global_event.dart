@@ -19,6 +19,13 @@ class EventIntoHome extends GlobalEvent {
   List<Object> get props => [];
 }
 
+class EventupdateSetting extends GlobalEvent {
+  final dynamic setting;
+  const EventupdateSetting(this.setting);
+  @override
+  List<Object> get props => [setting];
+}
+
 class EventExitApp extends GlobalEvent {
   final BuildContext context;
   const EventExitApp(this.context);

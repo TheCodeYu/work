@@ -50,7 +50,7 @@ class LogUtil {
   }
 
   static info(className, msg) async {
-    String datetime = DateTime.now().toString();
+    //String datetime = DateTime.now().toString();
     print('[$className]:' + msg);
     // await fileInfo?.writeAsString('\n$datetime [$className]:' + msg,
     //     mode: FileMode.append);

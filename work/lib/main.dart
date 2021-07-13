@@ -18,7 +18,6 @@ import 'constants/my_theme.dart';
 main() {
   setPathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
-
   runApp(BlocWrapper(MyApp()));
 }
 
@@ -77,10 +76,8 @@ class MyApp extends StatelessWidget {
           // if (_locale != null) {
           //   return _locale;
           // }
-          Locale locale = Locale.fromSubtags(
-              languageCode: 'zh',
-              scriptCode: 'Hans',
-              countryCode: 'CN'); //当APP不支持系统设置的语言时，设置默认语言
+          Locale locale =
+              Locale.fromSubtags(languageCode: 'zh'); //当APP不支持系统设置的语言时，设置默认语言
           /// [todo]遍历系统选择的语言是否是支持的语言,去除了脚本代码，暂时没测会不会有问题,ios系统带了脚本代码
           supportedLocales?.forEach((l) {
             if ((l.countryCode == _locale?.countryCode) &&

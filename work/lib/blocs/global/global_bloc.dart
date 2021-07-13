@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:work/storage/app_storage.dart';
-import 'package:work/storage/app_ui.dart';
 import 'package:work/utils/adaptive.dart';
 import 'package:work/utils/log_utils.dart';
 import 'package:equatable/equatable.dart';
@@ -29,10 +28,15 @@ class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
       var s = storage.intoHome();
 
       yield state.copyWith(
-          showBackGround: s.showBackGround,
-          itemStyleIndex: s.itemStyleIndex,
-          codeStyleIndex: s.codeStyleIndex,
-          appUI: s.appUI);
+        showBackGround: s.showBackGround,
+        itemStyleIndex: s.itemStyleIndex,
+        codeStyleIndex: s.codeStyleIndex,
+      );
+    }
+    if (event is EventupdateSetting) {
+      if (event.setting is Locale) {
+        yield state.copyWith(locale: event.setting);
+      }
     }
     if (event is EventExitApp) {
       storage.exitApp(event.context);

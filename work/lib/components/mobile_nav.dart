@@ -4,11 +4,8 @@ import 'dart:ui' as ui;
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:work/blocs/global/global_bloc.dart';
 import 'package:work/components/bottom_drawer.dart';
 import 'package:work/components/label_button.dart';
-import 'package:work/components/options_items.dart';
 import 'package:work/components/waterfall_notched.rectangle.dart';
 import 'package:work/pages/home.dart';
 
@@ -24,13 +21,15 @@ class MobileNav extends StatefulWidget {
       required this.destinations,
       required this.onItemTapped,
       required this.selected,
-      required this.child})
+      required this.child,
+      required this.language})
       : super(key: key);
 
   final List<RallyTab> destinations;
   final void Function(int) onItemTapped;
   final int selected;
   final Widget child;
+  final Widget language;
   @override
   _MobileNavState createState() => _MobileNavState();
 }
@@ -251,6 +250,7 @@ class _MobileNavState extends State<MobileNav> with TickerProviderStateMixin {
           navigationDestinations: widget.destinations,
           selected: widget.selected,
           toggleBottomDrawerVisibility: _toggleBottomDrawerVisibility,
+          language: widget.language,
         ),
         floatingActionButton: _bottomDrawerVisible
             ? null
@@ -427,6 +427,7 @@ class _AnimatedBottomAppBar extends StatelessWidget {
     required this.toggleBottomDrawerVisibility,
     required this.drawerController,
     required this.selected,
+    required this.language,
   });
 
   final int selected;
@@ -437,14 +438,9 @@ class _AnimatedBottomAppBar extends StatelessWidget {
   final Animation<double> dropArrowCurve;
   final List<RallyTab> navigationDestinations;
   final ui.VoidCallback toggleBottomDrawerVisibility;
-
+  final Widget language;
   @override
   Widget build(BuildContext context) {
-    var l = getLocaleDisplayOption(
-        context,
-        BlocProvider.of<GlobalBloc>(context).state.locale ??
-            Locale.fromSubtags(
-                languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'));
     bottomAppBarController.forward();
     return SizeTransition(
       sizeFactor: bottomAppBarCurve,
@@ -503,6 +499,7 @@ class _AnimatedBottomAppBar extends StatelessWidget {
                 ),
                 Expanded(
                   child: Container(
+                    padding: EdgeInsets.only(right: 15),
                     color: Colors.transparent,
                     child: _FadeThroughTransitionSwitcher(
                         fillColor: Colors.transparent,
@@ -510,8 +507,7 @@ class _AnimatedBottomAppBar extends StatelessWidget {
                             ? Align(
                                 key: UniqueKey(),
                                 alignment: Alignment.centerRight,
-                                child: MyLabel(
-                                    label: Text(l.title), onPressed: () {}),
+                                child: language,
                               )
                             : Align(
                                 alignment: Alignment.centerRight,

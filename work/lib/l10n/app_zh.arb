@@ -1,7 +1,15 @@
 {
-  "app": "风雨软件",
+  "app": "风宇软件",
   "@app": {
     "description": "传统的新生程序员问候语"
-  }
+  },
+  "titleOverview": "首页",
+  "titleAccounts": "产品与方案",
+  "titleBills": "服务与支持",
+  "titleBudgets": "资料与下载",
+  "titleSettings": "关于风宇",
+  "public": "微信公众号",
+  "register": "注册/登录"
+
 
 }

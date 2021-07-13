@@ -7,12 +7,10 @@ class GlobalState extends Equatable {
   final int codeStyleIndex;
   final int itemStyleIndex;
   final Locale? locale;
-  final AppUI? appUI;
   final double textScaleFactor;
   final TargetPlatform platform;
   final ThemeMode themeMode;
   GlobalState({
-    this.appUI,
     this.fontFamily = 'ComicNeue',
     this.themeColor = Colors.blue,
     this.showBackGround = true,
@@ -31,7 +29,6 @@ class GlobalState extends Equatable {
         codeStyleIndex,
         itemStyleIndex,
         locale,
-        appUI,
         textScaleFactor,
         platform,
         themeMode
@@ -44,7 +41,6 @@ class GlobalState extends Equatable {
           int? codeStyleIndex,
           int? itemStyleIndex,
           Locale? locale,
-          AppUI? appUI,
           double? textScaleFactor,
           TargetPlatform? platform,
           ThemeMode? themeMode}) =>
@@ -55,13 +51,12 @@ class GlobalState extends Equatable {
           codeStyleIndex: codeStyleIndex ?? this.codeStyleIndex,
           itemStyleIndex: itemStyleIndex ?? this.itemStyleIndex,
           locale: locale ?? this.locale,
-          appUI: appUI ?? this.appUI,
           textScaleFactor: textScaleFactor ?? this.textScaleFactor,
           platform: platform ?? this.platform,
           themeMode: themeMode ?? this.themeMode);
 
   @override
   String toString() {
-    return 'GlobalState{fontFamily: $fontFamily, themeColor: $themeColor, showBackGround: $showBackGround, codeStyleIndex: $codeStyleIndex, itemStyleIndex: $itemStyleIndex, locale: $locale, appUI: $appUI, textScaleFactor: $textScaleFactor, platform: $platform, themeMode:$themeMode}';
+    return 'GlobalState{fontFamily: $fontFamily, themeColor: $themeColor, showBackGround: $showBackGround, codeStyleIndex: $codeStyleIndex, itemStyleIndex: $itemStyleIndex, locale: $locale, textScaleFactor: $textScaleFactor, platform: $platform, themeMode:$themeMode}';
   }
 }
