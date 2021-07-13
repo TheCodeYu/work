@@ -7,7 +7,9 @@ import 'package:flutter/rendering.dart';
 import 'package:work/components/bottom_drawer.dart';
 import 'package:work/components/label_button.dart';
 import 'package:work/components/waterfall_notched.rectangle.dart';
+import 'package:work/config/i10n.dart';
 import 'package:work/pages/home.dart';
+import 'package:work/pages/login.dart';
 
 ///手机等小屏适配
 ///
@@ -512,8 +514,12 @@ class _AnimatedBottomAppBar extends StatelessWidget {
                             : Align(
                                 alignment: Alignment.centerRight,
                                 child: MyLabel(
-                                    label: Text.rich(TextSpan(text: '注册/登录')),
-                                    onPressed: () {}),
+                                    label: Text.rich(TextSpan(
+                                        text: locale(context).register)),
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pushNamed(LoginPage.defaultRoute);
+                                    }),
                               )),
                   ),
                 ),

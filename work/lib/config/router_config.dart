@@ -1,6 +1,8 @@
 import 'package:work/components/deferred_widget.dart';
 import 'package:work/pages/home.dart' deferred as rally;
 import 'package:work/pages/home.dart';
+import 'package:work/pages/login.dart';
+import 'package:work/pages/login.dart' deferred as login;
 import 'package:work/pages/splash/splash.dart';
 import 'package:work/utils/adaptive.dart';
 import 'package:work/utils/log_utils.dart';
@@ -33,15 +35,20 @@ class Path {
 }
 
 class RouterConfig {
-
   static List<Path> paths = [
     Path(
+      r'^' + LoginPage.defaultRoute,
+      (context, match) =>
+          DeferredWidget(login.loadLibrary, () => login.LoginPage()),
+    ),
+    Path(
       r'^' + HomePage.defaultRoute,
-          (context, match) =>DeferredWidget(rally.loadLibrary,()=>rally. HomePage()),
+      (context, match) =>
+          DeferredWidget(rally.loadLibrary, () => rally.HomePage()),
     ),
     Path(
       r'^/',
-          (context, match) => const Splash(),
+      (context, match) => const Splash(),
     ),
   ];
 
@@ -50,11 +57,12 @@ class RouterConfig {
     LogUtil.info('RouterConfig', 'onGenerateRoute:  ${settings.toString()}');
     for (final path in paths) {
       final regExpPattern = RegExp(path.pattern);
-      if(settings.name==null) continue;
+      if (settings.name == null) continue;
 
       if (regExpPattern.hasMatch(settings.name!)) {
         final firstMatch = regExpPattern.firstMatch(settings.name!);
-        final match = (firstMatch!.groupCount == 0) ? firstMatch.group(0) : null;
+        final match =
+            (firstMatch!.groupCount == 0) ? firstMatch.group(0) : null;
         if (kIsWeb) {
           LogUtil.info('RouterConfig', 'onGenerateRoute:  ${settings.name}');
           return NoAnimationMaterialPageRoute<void>(
@@ -72,8 +80,7 @@ class RouterConfig {
     // If no match was found, we let [WidgetsApp.onUnknownRoute] handle it.
     return null;
   }
-  }
-
+}
 
 class NoAnimationMaterialPageRoute<T> extends MaterialPageRoute<T> {
   NoAnimationMaterialPageRoute({
@@ -83,12 +90,11 @@ class NoAnimationMaterialPageRoute<T> extends MaterialPageRoute<T> {
 
   @override
   Widget buildTransitions(
-      BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-      Widget child,
-      ) {
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
     return child;
   }
 }
-

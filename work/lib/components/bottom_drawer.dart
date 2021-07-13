@@ -35,16 +35,9 @@ class BottomDrawer extends StatelessWidget {
                   leading,
                   const SizedBox(height: 8),
                   const Divider(
-                    thickness: 0.25,
+                    thickness: 1,
                     indent: 18,
                     endIndent: 160,
-                  ),
-                  const SizedBox(height: 16),
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(start: 18),
-                    child: Text(
-                      'FOLDERS',
-                    ),
                   ),
                   const SizedBox(height: 4),
                   trailing ?? const SizedBox(height: 4),

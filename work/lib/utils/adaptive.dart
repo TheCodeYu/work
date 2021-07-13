@@ -50,9 +50,9 @@ bool isDisplaySmallDesktop(BuildContext context) {
 const bool kIsWeb = identical(0, 0.0);
 
 ///字体大小设计
-double _textScaleFactor(BuildContext context,{bool useSentinel = false}){
+double _textScaleFactor(BuildContext context, {bool useSentinel = false}) {
   var temp = BlocProvider.of<GlobalBloc>(context).state;
-if (temp.textScaleFactor == systemTextScaleFactorOption) {
+  if (temp.textScaleFactor == systemTextScaleFactorOption) {
     return useSentinel
         ? systemTextScaleFactorOption
         : MediaQuery.of(context).textScaleFactor;
@@ -90,4 +90,5 @@ double cappedTextScale(BuildContext context) {
   return max(textScaleFactor, 1);
 }
 
-
+double letterSpacingOrNone(double letterSpacing) =>
+    kIsWeb ? 0.0 : letterSpacing;

@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:work/components/label_button.dart';
 import 'package:work/components/mobile_nav.dart';
 import 'package:work/components/options_items.dart';
 import 'package:work/config/i10n.dart';
+import 'package:work/pages/login.dart';
 import 'package:work/pages/studio_page.dart';
 import 'package:work/utils/adaptive.dart';
 
@@ -250,13 +252,26 @@ class _RallyTabBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Container(
-            height: 50,
+            height: 100,
             padding: EdgeInsets.only(bottom: 5.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 ///logo放这里
+                TextLiquidFill(
+                  loadDuration: const Duration(seconds: 10),
+                  waveDuration: const Duration(seconds: 10),
+                  text: locale(context).app,
+                  waveColor: Colors.black,
+                  boxBackgroundColor: Color(0xFFE6EBEB),
+                  textStyle: TextStyle(
+                      fontSize: 32.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                  boxHeight: 75.0,
+                ),
+                Expanded(child: SizedBox()),
                 MyTooltip(
                   padding: EdgeInsets.zero,
                   message: Image.asset(
@@ -274,7 +289,9 @@ class _RallyTabBar extends StatelessWidget {
                 ),
                 MyLabel(
                   label: Text.rich(TextSpan(text: locale(context).register)),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(LoginPage.defaultRoute);
+                  },
                 ),
                 SizedBox(
                   width: 5,
