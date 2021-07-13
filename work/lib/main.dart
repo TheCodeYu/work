@@ -1,20 +1,17 @@
 import 'dart:ui';
 
 import 'package:animations/animations.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:url_strategy/url_strategy.dart';
 import 'package:work/blocs/bloc_wrapper.dart';
 import 'package:work/blocs/global/global_bloc.dart';
 import 'package:work/config/i10n.dart';
 import 'package:work/config/router_config.dart';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_localized_locales/flutter_localized_locales.dart';
-
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:url_strategy/url_strategy.dart';
-
 
 import 'constants/my_theme.dart';
 
@@ -27,7 +24,6 @@ main() {
 
 class MyApp extends StatelessWidget {
   final sharedZAxisTransitionBuilder = const SharedAxisPageTransitionsBuilder(
-    fillColor: MyThemeData.primaryBackground,
     transitionType: SharedAxisTransitionType.scaled,
   );
   @override
@@ -50,7 +46,7 @@ class MyApp extends StatelessWidget {
         onGenerateTitle: (context) => AppLocalizations.of(context)!.app,
         supportedLocales: AppLocalizations.supportedLocales,
         themeMode: state.themeMode,
-        theme: MyThemeData.lightThemeData(state).copyWith(
+        theme: MyThemeData.lightThemeData(context, state).copyWith(
           platform: state.platform,
           pageTransitionsTheme: PageTransitionsTheme(
             builders: {
@@ -59,7 +55,7 @@ class MyApp extends StatelessWidget {
             },
           ),
         ),
-        darkTheme: MyThemeData.darkThemeData(state).copyWith(
+        darkTheme: MyThemeData.darkThemeData(context, state).copyWith(
           platform: state.platform,
         ),
         localizationsDelegates: [
@@ -72,6 +68,7 @@ class MyApp extends StatelessWidget {
         ],
         locale: state.locale,
         localeResolutionCallback:
+
             /// [supportedLocales] : supportedLocales
             ///iOS上语言表示不一样 [en_US, zh_CN]  zh_Hans_CN languageCode-scriptCode-countryCode
             (Locale? _locale, Iterable<Locale>? supportedLocales) {

@@ -7,7 +7,6 @@ import 'package:work/components/label_button.dart';
 import 'package:work/components/mobile_nav.dart';
 import 'package:work/components/options_items.dart';
 import 'package:work/config/i10n.dart';
-import 'package:work/constants/my_theme.dart';
 import 'package:work/pages/studio_page.dart';
 import 'package:work/utils/adaptive.dart';
 
@@ -233,10 +232,10 @@ class _RallyTabBar extends StatelessWidget {
             height: 50,
             child: Row(
               children: [
+                ///logo放这里
                 MyLabel(
                   label: Text.rich(TextSpan(text: '注册/登录')),
                   onPressed: () {},
-                  backgroundColor: MyThemeData.primaryBackground,
                 ),
                 SizedBox(
                   width: 5,
@@ -244,7 +243,6 @@ class _RallyTabBar extends StatelessWidget {
                 MyLabel(
                   label: Text(l.title),
                   onPressed: () {},
-                  backgroundColor: MyThemeData.primaryBackground,
                 ),
               ],
             ),

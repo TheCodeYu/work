@@ -19,7 +19,7 @@ class ICP extends StatelessWidget {
         margin: isDesktop
             ? EdgeInsets.zero
             : EdgeInsets.only(bottom: kToolbarHeight),
-        height: isDesktop ? 50 : 100,
+        height: isDesktop ? 50 : 75,
         color: Colors.transparent,
         child: ListView(
           scrollDirection: isDesktop ? Axis.horizontal : Axis.vertical,
@@ -27,30 +27,42 @@ class ICP extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           children: [
             Center(
-                child: TextButton(
-                    onPressed:  ()=>_launchURL(_url_home),
-                    child:
-                        Text.rich(TextSpan(text: '© 2021-2022 风宇工作室 版权所有',style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            color: Colors.white))))),
+              child: Text.rich(
+                TextSpan(
+                    text: '© 2021-2022 风宇工作室 版权所有',
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () => _launchURL(_url_home)),
+              ),
+            ),
             Center(
-                child: TextButton(
-                    child: Text.rich(TextSpan(
-                        text: '鄂ICP备2021012206号',
-                        style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            color: Colors.white))),
-                    onPressed: ()=>_launchURL(_url_gov))),
+              child: Text.rich(
+                TextSpan(
+                    text: '鄂ICP备2021012206号',
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () => _launchURL(_url_gov)),
+              ),
+            ),
             Center(
-                child: TextButton.icon(
-                    onPressed:  ()=>_launchURL(_url_gov),
-                    icon: Image.asset('images/webLog.png'),
-                    label: Text.rich(TextSpan(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('images/webLog.png'),
+                  Text.rich(TextSpan(
                       text: '川公网安备 51011402000164号',
                       style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          color: Colors.white),
-                    )))),
+                        decoration: TextDecoration.underline,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () => _launchURL(_url_gov)))
+                ],
+              ),
+            )
           ],
         ));
   }

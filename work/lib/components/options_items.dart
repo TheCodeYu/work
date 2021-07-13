@@ -2,9 +2,8 @@ import 'dart:collection';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:work/constants/my_theme.dart';
+import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 
 /// description:可隐藏的listItem
 ///
@@ -26,12 +25,12 @@ class DisplayOption {
 class OptionsListItem<T> extends StatefulWidget {
   OptionsListItem(
       {Key? key,
-        required this.optionsMap,
-        required this.title,
-        required this.selectedOption,
-        required this.onOptionChanged,
-        required this.onTap,
-        required this.isExpanded})
+      required this.optionsMap,
+      required this.title,
+      required this.selectedOption,
+      required this.onOptionChanged,
+      required this.onTap,
+      required this.isExpanded})
       : super(key: key);
 
   final LinkedHashMap<T, DisplayOption> optionsMap;
@@ -48,12 +47,12 @@ class OptionsListItem<T> extends StatefulWidget {
 class _OptionsListItemState<T> extends State<OptionsListItem<T>>
     with SingleTickerProviderStateMixin {
   static final Animatable<double> _easeInTween =
-  CurveTween(curve: Curves.easeIn);
+      CurveTween(curve: Curves.easeIn);
   static const _expandDuration = Duration(milliseconds: 150);
   // Common constants between SlowMotionSetting and SettingsListItem.
   final settingItemBorderRadius = BorderRadius.circular(10);
   static const settingItemHeaderMargin =
-  EdgeInsetsDirectional.fromSTEB(32, 0, 32, 8);
+      EdgeInsetsDirectional.fromSTEB(32, 0, 32, 8);
 
   late AnimationController _controller;
   late Animation<double> _childrenHeightFactor;
@@ -162,7 +161,6 @@ class _OptionsListItemState<T> extends State<OptionsListItem<T>>
           border: BorderDirectional(
             start: BorderSide(
               width: 2,
-              color: MyThemeData.primaryBackground,
             ),
           ),
         ),
@@ -229,52 +227,52 @@ class _CategoryHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         child: Material(
-          shape: RoundedRectangleBorder(borderRadius: borderRadius),
-          clipBehavior: Clip.antiAlias,
-          child: Container(
-            margin: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
-            decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(style: BorderStyle.solid))),
-            child: InkWell(
-              onTap: onTap,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: padding,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(title),
-                          SizeTransition(
-                            sizeFactor: subtitleHeight,
-                            child: Text(
-                              subtitle,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+      shape: RoundedRectangleBorder(borderRadius: borderRadius),
+      clipBehavior: Clip.antiAlias,
+      child: Container(
+        margin: EdgeInsets.only(left: 15, right: 15, top: 5, bottom: 5),
+        decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(style: BorderStyle.solid))),
+        child: InkWell(
+          onTap: onTap,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: padding,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(title),
+                      SizeTransition(
+                        sizeFactor: subtitleHeight,
+                        child: Text(
+                          subtitle,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      )
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(
-                      start: 8,
-                      end: 24,
-                    ),
-                    child: RotationTransition(
-                      turns: chevronRotation,
-                      child: const Icon(Icons.chevron_right),
-                    ),
-                  )
-                ],
+                ),
               ),
-            ),
+              Padding(
+                padding: const EdgeInsetsDirectional.only(
+                  start: 8,
+                  end: 24,
+                ),
+                child: RotationTransition(
+                  turns: chevronRotation,
+                  child: const Icon(Icons.chevron_right),
+                ),
+              )
+            ],
           ),
-        ));
+        ),
+      ),
+    ));
   }
 }
 
@@ -330,7 +328,7 @@ DisplayOption getLocaleDisplayOption(BuildContext context, Locale locale) {
   final localeName = LocaleNames.of(context)!.nameOf(localeCode);
   if (localeName != null) {
     final localeNativeName =
-    LocaleNamesLocalizationsDelegate.nativeLocaleNames[localeCode];
+        LocaleNamesLocalizationsDelegate.nativeLocaleNames[localeCode];
     return localeNativeName != null
         ? DisplayOption(localeNativeName, subtitle: localeName)
         : DisplayOption(localeName);

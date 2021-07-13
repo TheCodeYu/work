@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class Test {
-    @GetMapping("/plugin111")
+    @GetMapping("/anonymous/plugin111")
     public String show(){
         return "index";
     }

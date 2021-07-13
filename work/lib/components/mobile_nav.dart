@@ -10,7 +10,6 @@ import 'package:work/components/bottom_drawer.dart';
 import 'package:work/components/label_button.dart';
 import 'package:work/components/options_items.dart';
 import 'package:work/components/waterfall_notched.rectangle.dart';
-import 'package:work/constants/my_theme.dart';
 import 'package:work/pages/home.dart';
 
 ///手机等小屏适配
@@ -211,7 +210,6 @@ class _MobileNavState extends State<MobileNav> with TickerProviderStateMixin {
             child: Container(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-
             ),
           ),
         ),
@@ -240,7 +238,6 @@ class _MobileNavState extends State<MobileNav> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return _SharedAxisTransitionSwitcher(
       defaultChild: Scaffold(
-        backgroundColor: MyThemeData.primaryBackground,
         extendBody: true,
         body: LayoutBuilder(
           builder: _buildStack,
@@ -255,8 +252,9 @@ class _MobileNavState extends State<MobileNav> with TickerProviderStateMixin {
           selected: widget.selected,
           toggleBottomDrawerVisibility: _toggleBottomDrawerVisibility,
         ),
-        floatingActionButton: _bottomDrawerVisible ? null :
-        const Padding(
+        floatingActionButton: _bottomDrawerVisible
+            ? null
+            : const Padding(
                 padding: EdgeInsetsDirectional.only(bottom: 8),
                 child: _ReplyFab(),
               ),
@@ -383,7 +381,6 @@ class _SharedAxisTransitionSwitcher extends StatelessWidget {
       reverse: !onSearchPage,
       transitionBuilder: (child, animation, secondaryAnimation) {
         return SharedAxisTransition(
-          fillColor: MyThemeData.primaryBackground,
           animation: animation,
           secondaryAnimation: secondaryAnimation,
           transitionType: SharedAxisTransitionType.scaled,
@@ -443,10 +440,11 @@ class _AnimatedBottomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var l = getLocaleDisplayOption(context, BlocProvider.of<GlobalBloc>(context).state.locale??Locale.fromSubtags(
-        languageCode: 'zh',
-        scriptCode: 'Hans',
-        countryCode: 'CN'));
+    var l = getLocaleDisplayOption(
+        context,
+        BlocProvider.of<GlobalBloc>(context).state.locale ??
+            Locale.fromSubtags(
+                languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'));
     bottomAppBarController.forward();
     return SizeTransition(
       sizeFactor: bottomAppBarCurve,
@@ -454,7 +452,6 @@ class _AnimatedBottomAppBar extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsetsDirectional.only(top: 2),
         child: BottomAppBar(
-          color: MyThemeData.primaryBackground,
           shape: const WaterfallNotchedRectangle(),
           notchMargin: 6,
           child: Container(
@@ -513,12 +510,14 @@ class _AnimatedBottomAppBar extends StatelessWidget {
                             ? Align(
                                 key: UniqueKey(),
                                 alignment: Alignment.centerRight,
-                                child: MyLabel(label: Text(l.title), onPressed: (){},backgroundColor: MyThemeData.primaryBackground,),
+                                child: MyLabel(
+                                    label: Text(l.title), onPressed: () {}),
                               )
                             : Align(
                                 alignment: Alignment.centerRight,
-                                child: MyLabel(label: Text.rich(TextSpan(text: '注册/登录')), onPressed: (){
-                                },backgroundColor: MyThemeData.primaryBackground,),
+                                child: MyLabel(
+                                    label: Text.rich(TextSpan(text: '注册/登录')),
+                                    onPressed: () {}),
                               )),
                   ),
                 ),
