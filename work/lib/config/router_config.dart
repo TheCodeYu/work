@@ -64,7 +64,6 @@ class RouterConfig {
         final match =
             (firstMatch!.groupCount == 0) ? firstMatch.group(0) : null;
         if (kIsWeb) {
-          LogUtil.info('RouterConfig', 'onGenerateRoute:  ${settings.name}');
           return NoAnimationMaterialPageRoute<void>(
             builder: (context) => path.builder(context, match!),
             settings: settings,

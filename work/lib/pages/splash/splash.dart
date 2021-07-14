@@ -1,5 +1,4 @@
 import 'package:work/blocs/global/global_bloc.dart';
-import 'package:work/config/rx_config.dart';
 import 'package:work/pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,14 +24,6 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    rx.subscribe(Rx.rx_event_splash[0], (data) {
-      progress = data;
-      setState(() {});
-      if (progress == 100) {
-        BlocProvider.of<GlobalBloc>(context).add(EventIntoHome());
-        Navigator.of(context).pushReplacementNamed(HomePage.defaultRoute);
-      }
-    }, name: this.runtimeType.toString());
     _controller =
         AnimationController(duration: Duration(milliseconds: 1000), vsync: this)
           ..addListener(() => setState(() {
@@ -40,12 +31,8 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
               }))
           ..addStatusListener((s) {
             if (s == AnimationStatus.completed) {
-              setState(() {
-                _animEnd = true;
-                Future.delayed(Duration(milliseconds: 600)).then((e) {
-                  BlocProvider.of<GlobalBloc>(context).add(EventInitApp());
-                });
-              });
+              BlocProvider.of<GlobalBloc>(context).add(EventIntoHome());
+              Navigator.of(context).pushReplacementNamed(HomePage.defaultRoute);
             }
           });
 
@@ -57,7 +44,6 @@ class _SplashState extends State<Splash> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    rx.unSubscribe(Rx.rx_event_splash[0], name: this.runtimeType.toString());
     super.dispose();
   }
 

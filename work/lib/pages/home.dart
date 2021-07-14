@@ -1,9 +1,9 @@
 import 'dart:collection';
 
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:work/blocs/detail/detail_bloc.dart';
 import 'package:work/blocs/global/global_bloc.dart';
 import 'package:work/components/button/my_tool_tip.dart';
 import 'package:work/components/icp.dart';
@@ -11,7 +11,6 @@ import 'package:work/components/label_button.dart';
 import 'package:work/components/mobile_nav.dart';
 import 'package:work/components/options_items.dart';
 import 'package:work/config/i10n.dart';
-import 'package:work/pages/login.dart';
 import 'package:work/pages/studio_page.dart';
 import 'package:work/utils/adaptive.dart';
 
@@ -245,32 +244,45 @@ class _RallyTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // print(_getLocaleOptions(context));
-
+    final detailBloc = BlocProvider.of<DetailBloc>(context);
     return FocusTraversalOrder(
       order: const NumericFocusOrder(0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Container(
+            decoration: new BoxDecoration(
+              image: new DecorationImage(
+                image: new AssetImage('images/headbg.jpg'),
+                fit: BoxFit.cover,
+                //这里是从assets静态文件中获取的，也可以new NetworkImage(）从网络上获取
+              ),
+            ),
             height: 100,
-            padding: EdgeInsets.only(bottom: 5.0),
+            padding: EdgeInsets.only(bottom: 10, left: 50),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 ///logo放这里
-                TextLiquidFill(
-                  loadDuration: const Duration(seconds: 10),
-                  waveDuration: const Duration(seconds: 10),
-                  text: locale(context).app,
-                  waveColor: Colors.black,
-                  boxBackgroundColor: Color(0xFFE6EBEB),
-                  textStyle: TextStyle(
-                      fontSize: 32.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                  boxHeight: 75.0,
-                ),
+                Text(locale(context).app,
+                    style: TextStyle(
+                        fontSize: 32.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black)),
+
+                // TextLiquidFill(
+                //   loadDuration: const Duration(seconds: 10),
+                //   waveDuration: const Duration(seconds: 10),
+                //   text: locale(context).app,
+                //   waveColor: Colors.black,
+                //   boxBackgroundColor: Colors.transparent, //Color(0xFFE6EBEB),
+                //   textStyle: TextStyle(
+                //       fontSize: 32.0,
+                //       fontWeight: FontWeight.bold,
+                //       color: Colors.black),
+                //   boxHeight: 75.0,
+                // ),
                 Expanded(child: SizedBox()),
                 MyTooltip(
                   padding: EdgeInsets.zero,
@@ -288,15 +300,22 @@ class _RallyTabBar extends StatelessWidget {
                   width: 5,
                 ),
                 MyLabel(
-                  label: Text.rich(TextSpan(text: locale(context).register)),
+                  label: Text.rich(TextSpan(
+                      text: detailBloc.state.token == null
+                          ? locale(context).register
+                          : detailBloc.state.name)),
                   onPressed: () {
-                    Navigator.of(context).pushNamed(LoginPage.defaultRoute);
+                    //Navigator.of(context).pushNamed(LoginPage.defaultRoute);
+                    detailBloc.add(DetailUpdateApp('wqerwqewqewqewqewer'));
                   },
                 ),
                 SizedBox(
                   width: 5,
                 ),
-                language
+                language,
+                SizedBox(
+                  width: 5,
+                ),
               ],
             ),
           ),

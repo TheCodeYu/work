@@ -49,8 +49,6 @@ class Rx {
       _signMapping[sign]!.remove(name);
     }
   }
-
-  static const rx_event_splash = <String>['initData'];
 }
 
 final rx = Rx();

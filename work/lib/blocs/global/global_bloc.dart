@@ -15,8 +15,6 @@ class GlobalBloc extends Bloc<GlobalEvent, GlobalState> {
 
   GlobalBloc(this.storage) : super(GlobalState());
 
-  Future<SharedPreferences> get sp => storage.sp;
-
   @override
   Stream<GlobalState> mapEventToState(GlobalEvent event) async* {
     if (event is EventInitApp) {

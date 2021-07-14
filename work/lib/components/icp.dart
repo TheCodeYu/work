@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:work/config/i10n.dart';
 import 'package:work/utils/adaptive.dart';
 
 class ICP extends StatelessWidget {
@@ -29,7 +30,8 @@ class ICP extends StatelessWidget {
             Center(
               child: Text.rich(
                 TextSpan(
-                    text: '© 2021-2022 风宇工作室 版权所有',
+                    text:
+                        'Copyright © 2021-2022 ${locale(context).app} ${locale(context).copyright}',
                     style: TextStyle(
                       decoration: TextDecoration.underline,
                     ),

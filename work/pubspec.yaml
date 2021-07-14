@@ -44,7 +44,7 @@ flutter:
 #国际化
   generate: true # 添加这一行
   assets:
-    - assets/images/icon_head.webp
+    - assets/images/
     - assets/flutter.db
     - assets/os/images/
     - assets/os/tools/

@@ -9,4 +9,6 @@ class SP {
   static const itemStyleIndex = 'item_style_index';
   static const locale = 'locale';
   static const textScaleFactor = "textScaleFactor";
+
+  static const token = 'token';
 }
