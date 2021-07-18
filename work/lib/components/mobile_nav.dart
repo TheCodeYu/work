@@ -5,11 +5,8 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:work/components/bottom_drawer.dart';
-import 'package:work/components/label_button.dart';
 import 'package:work/components/waterfall_notched.rectangle.dart';
-import 'package:work/config/i10n.dart';
 import 'package:work/pages/home.dart';
-import 'package:work/pages/login.dart';
 
 ///手机等小屏适配
 ///
@@ -24,7 +21,8 @@ class MobileNav extends StatefulWidget {
       required this.onItemTapped,
       required this.selected,
       required this.child,
-      required this.language})
+      required this.language,
+      required this.login})
       : super(key: key);
 
   final List<RallyTab> destinations;
@@ -32,6 +30,7 @@ class MobileNav extends StatefulWidget {
   final int selected;
   final Widget child;
   final Widget language;
+  final Widget login;
   @override
   _MobileNavState createState() => _MobileNavState();
 }
@@ -244,16 +243,16 @@ class _MobileNavState extends State<MobileNav> with TickerProviderStateMixin {
           builder: _buildStack,
         ),
         bottomNavigationBar: _AnimatedBottomAppBar(
-          bottomAppBarController: _bottomAppBarController,
-          bottomAppBarCurve: _bottomAppBarCurve,
-          bottomDrawerVisible: _bottomDrawerVisible,
-          dropArrowCurve: _dropArrowCurve,
-          drawerController: _drawerController,
-          navigationDestinations: widget.destinations,
-          selected: widget.selected,
-          toggleBottomDrawerVisibility: _toggleBottomDrawerVisibility,
-          language: widget.language,
-        ),
+            bottomAppBarController: _bottomAppBarController,
+            bottomAppBarCurve: _bottomAppBarCurve,
+            bottomDrawerVisible: _bottomDrawerVisible,
+            dropArrowCurve: _dropArrowCurve,
+            drawerController: _drawerController,
+            navigationDestinations: widget.destinations,
+            selected: widget.selected,
+            toggleBottomDrawerVisibility: _toggleBottomDrawerVisibility,
+            language: widget.language,
+            login: widget.login),
         floatingActionButton: _bottomDrawerVisible
             ? null
             : const Padding(
@@ -430,6 +429,7 @@ class _AnimatedBottomAppBar extends StatelessWidget {
     required this.drawerController,
     required this.selected,
     required this.language,
+    required this.login,
   });
 
   final int selected;
@@ -441,6 +441,7 @@ class _AnimatedBottomAppBar extends StatelessWidget {
   final List<RallyTab> navigationDestinations;
   final ui.VoidCallback toggleBottomDrawerVisibility;
   final Widget language;
+  final Widget login;
   @override
   Widget build(BuildContext context) {
     bottomAppBarController.forward();
@@ -513,14 +514,7 @@ class _AnimatedBottomAppBar extends StatelessWidget {
                               )
                             : Align(
                                 alignment: Alignment.centerRight,
-                                child: MyLabel(
-                                    label: Text.rich(TextSpan(
-                                        text: locale(context).register)),
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .pushNamed(LoginPage.defaultRoute);
-                                    }),
-                              )),
+                                child: login)),
                   ),
                 ),
               ],

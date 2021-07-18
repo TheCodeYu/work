@@ -10,6 +10,16 @@
   "titleSettings": "About Fengyu",
   "public": "WeChat Official Account",
   "register": "Register and Sign in",
-  "copyright":"all rights reserved"
-
+  "copyright":"all rights reserved",
+  "desktop":"desktop",
+  "mobile":"mobile",
+  "mini":"mini",
+  "web":"web",
+  "desktop_d":"desktop_d",
+  "mobile_d":"mobile_d",
+  "mini_d":"mini_d",
+  "web_d":"web_d",
+  "head":"server",
+  "githubRepo": "{repoName} GitHub repository",
+  "aboutDialogDescription": "To see the source code for this app, please visit the {repoLink}."
 }

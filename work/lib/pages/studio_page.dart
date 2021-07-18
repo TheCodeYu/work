@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:work/components/carouselCard.dart';
+import 'package:work/config/i10n.dart';
 import 'package:work/utils/adaptive.dart';
+import 'dart:math' as math;
+
+const _horizontalPadding = 32.0;
+const _carouselItemMargin = 8.0;
+const _horizontalDesktopPadding = 81.0;
+const _carouselHeightMin = 200.0 + 2 * _carouselItemMargin;
+const _desktopCardsPerPage = 4;
 
 ///首页
 ///
 ///
-
 class StudioPage extends StatefulWidget {
   const StudioPage({Key? key}) : super(key: key);
 
@@ -15,100 +22,565 @@ class StudioPage extends StatefulWidget {
 
 class _StudioPageState extends State<StudioPage> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (isDisplayDesktop(context)) {
-      const sortKeyName = 'Overview';
-      return SingleChildScrollView(
-        restorationId: 'overview_scroll_view',
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 24),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Flexible(
-                flex: 7,
-                child: Semantics(
-                  sortKey: const OrdinalSortKey(1, name: sortKeyName),
-                  child: const _OverviewGrid(spacing: 24),
-                ),
-              ),
-              const SizedBox(
-                width: 24,
-                height: 1000,
-              ),
-              Container(
-                width: 24,
-                height: 1000,
-                child: Text('11111'),
-                color: Colors.white,
-              ),
-              Flexible(
-                flex: 3,
-                child: SizedBox(
-                  width: 400,
-                  child: Semantics(
-                    sortKey: const OrdinalSortKey(2, name: sortKeyName),
-                  ),
-                ),
-              ),
-            ],
-          ),
+    final isDesktop = isDisplayDesktop(context);
+
+    final carouselCards = <Widget>[
+      CarouselCard(
+        asset: const AssetImage(
+          'assets/studies/reply_card.png',
         ),
-      );
-    } else {
-      return SingleChildScrollView(
-        restorationId: 'overview_scroll_view',
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          child: Column(
-            children: [
-              Container(
-                width: 24,
-                height: 1000,
-                child: Text('11111'),
-                color: Colors.white,
-              ),
-              const _OverviewGrid(spacing: 12),
-            ],
+        assetColor: const Color(0xFF344955),
+        subtitle: locale(context).desktop_d,
+        title: locale(context).desktop,
+      ),
+      CarouselCard(
+        asset: const AssetImage(
+          'assets/studies/shrine_card.png',
+        ),
+        assetColor: const Color(0xFF344955),
+        subtitle: locale(context).mobile_d,
+        title: locale(context).mobile,
+      ),
+      CarouselCard(
+        asset: const AssetImage(
+          'assets/studies/rally_card.png',
+        ),
+        assetColor: const Color(0xFF344955),
+        subtitle: locale(context).mini_d,
+        title: locale(context).mini,
+      ),
+      CarouselCard(
+        asset: const AssetImage(
+          'assets/studies/crane_card.png',
+        ),
+        assetColor: const Color(0xFF344955),
+        subtitle: locale(context).web_d,
+        title: locale(context).web,
+      ),
+    ];
+    if (isDesktop) {
+      return Scaffold(
+          body: ListView(
+        key: const ValueKey('HomeListView'),
+        padding: EdgeInsetsDirectional.only(top: firstHeaderDesktopTopPadding),
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: _horizontalDesktopPadding,
+            ),
+            child: Header(
+                color: Theme.of(context).colorScheme.primary,
+                text: locale(context).head),
           ),
+          SizedBox(
+              height: _carouselHeightMin,
+              child: _DesktopCarousel(children: carouselCards)),
+        ],
+      ));
+    } else {
+      return Scaffold(
+        body: _AnimatedHomePage(
+          restorationId: 'animated_page',
+          carouselCards: carouselCards,
         ),
       );
     }
   }
 }
 
-class _OverviewGrid extends StatelessWidget {
-  const _OverviewGrid({Key? key, required this.spacing}) : super(key: key);
+class _AnimatedHomePage extends StatefulWidget {
+  const _AnimatedHomePage(
+      {Key? key, required this.restorationId, required this.carouselCards})
+      : super(key: key);
 
-  final double spacing;
+  final String restorationId;
+  final List<Widget> carouselCards;
+  @override
+  _AnimatedHomePageState createState() => _AnimatedHomePageState();
+}
+
+class _AnimatedHomePageState extends State<_AnimatedHomePage>
+    with RestorationMixin, SingleTickerProviderStateMixin {
+  final RestorableBool _isMaterialListExpanded = RestorableBool(false);
+  final RestorableBool _isCupertinoListExpanded = RestorableBool(false);
+  final RestorableBool _isOtherListExpanded = RestorableBool(false);
+  late AnimationController _animationController;
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 800));
+    _animationController.value = 1.0;
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    _isMaterialListExpanded.dispose();
+    _isCupertinoListExpanded.dispose();
+    _isOtherListExpanded.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(children: [
+      ListView(
+          // Makes integration tests possible.
+          key: const ValueKey('HomeListView'),
+          restorationId: 'home_list_view',
+          children: [
+            const SizedBox(height: 8),
+            Container(
+              margin:
+                  const EdgeInsets.symmetric(horizontal: _horizontalPadding),
+              child: Header(
+                  color: Theme.of(context).colorScheme.primary,
+                  text: locale(context).head),
+            ),
+            Carousel(
+              animationController: _animationController,
+              restorationId: 'home_carousel',
+              children: widget.carouselCards,
+            ),
+          ])
+    ]);
+  }
+
+  @override
+  String? get restorationId => widget.restorationId;
+
+  @override
+  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+    registerForRestoration(_isMaterialListExpanded, 'material_list');
+    registerForRestoration(_isCupertinoListExpanded, 'cupertino_list');
+    registerForRestoration(_isOtherListExpanded, 'other_list');
+  }
+}
+
+class Header extends StatelessWidget {
+  const Header({Key? key, required this.color, required this.text})
+      : super(key: key);
+
+  final Color color;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        top: isDisplayDesktop(context) ? 63 : 15,
+        bottom: isDisplayDesktop(context) ? 21 : 11,
+      ),
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.headline4!.apply(
+              color: color,
+              fontSizeDelta:
+                  isDisplayDesktop(context) ? desktopDisplay1FontDelta : 0,
+            ),
+      ),
+    );
+  }
+}
+
+/// This creates a horizontally scrolling [ListView] of items.
+///
+/// This class uses a [ListView] with a custom [ScrollPhysics] to enable
+/// snapping behavior. A [PageView] was considered but does not allow for
+/// multiple pages visible without centering the first page.
+class _DesktopCarousel extends StatefulWidget {
+  const _DesktopCarousel({Key? key, required this.children}) : super(key: key);
+
+  final List<Widget> children;
+
+  @override
+  _DesktopCarouselState createState() => _DesktopCarouselState();
+}
+
+class _DesktopCarouselState extends State<_DesktopCarousel> {
+  static const cardPadding = 15.0;
+  late ScrollController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = ScrollController();
+    _controller.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Widget _builder(int index) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 8,
+        horizontal: cardPadding,
+      ),
+      child: widget.children[index],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var showPreviousButton = false;
+    var showNextButton = true;
+    // Only check this after the _controller has been attached to the ListView.
+    if (_controller.hasClients) {
+      showPreviousButton = _controller.offset > 0;
+      showNextButton =
+          _controller.offset < _controller.position.maxScrollExtent;
+    }
+    final totalWidth = MediaQuery.of(context).size.width -
+        (_horizontalDesktopPadding - cardPadding) * 2;
+    final itemWidth = totalWidth / _desktopCardsPerPage;
+
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: _horizontalDesktopPadding - cardPadding,
+          ),
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            physics: const _SnappingScrollPhysics(),
+            controller: _controller,
+            itemExtent: itemWidth,
+            itemCount: widget.children.length,
+            itemBuilder: (context, index) => _builder(index),
+          ),
+        ),
+        if (showPreviousButton)
+          _DesktopPageButton(
+            onTap: () {
+              _controller.animateTo(
+                _controller.offset - itemWidth,
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeInOut,
+              );
+            },
+          ),
+        if (showNextButton)
+          _DesktopPageButton(
+            isEnd: true,
+            onTap: () {
+              _controller.animateTo(
+                _controller.offset + itemWidth,
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeInOut,
+              );
+            },
+          ),
+      ],
+    );
+  }
+}
+
+/// Scrolling physics that snaps to the new item in the [_DesktopCarousel].
+class _SnappingScrollPhysics extends ScrollPhysics {
+  const _SnappingScrollPhysics({ScrollPhysics? parent}) : super(parent: parent);
+
+  @override
+  _SnappingScrollPhysics applyTo(ScrollPhysics? ancestor) {
+    return _SnappingScrollPhysics(parent: buildParent(ancestor));
+  }
+
+  double _getTargetPixels(
+    ScrollMetrics position,
+    Tolerance tolerance,
+    double velocity,
+  ) {
+    final itemWidth = position.viewportDimension / _desktopCardsPerPage;
+    var item = position.pixels / itemWidth;
+    if (velocity < -tolerance.velocity) {
+      item -= 0.5;
+    } else if (velocity > tolerance.velocity) {
+      item += 0.5;
+    }
+    return math.min(
+      item.roundToDouble() * itemWidth,
+      position.maxScrollExtent,
+    );
+  }
+
+  @override
+  Simulation? createBallisticSimulation(
+    ScrollMetrics position,
+    double velocity,
+  ) {
+    if ((velocity <= 0.0 && position.pixels <= position.minScrollExtent) ||
+        (velocity >= 0.0 && position.pixels >= position.maxScrollExtent)) {
+      return super.createBallisticSimulation(position, velocity);
+    }
+    final tolerance = this.tolerance;
+    final target = _getTargetPixels(position, tolerance, velocity);
+    if (target != position.pixels) {
+      return ScrollSpringSimulation(
+        spring,
+        position.pixels,
+        target,
+        velocity,
+        tolerance: tolerance,
+      );
+    }
+    return null;
+  }
+
+  @override
+  bool get allowImplicitScrolling => true;
+}
+
+class _DesktopPageButton extends StatelessWidget {
+  const _DesktopPageButton({
+    Key? key,
+    this.isEnd = false,
+    required this.onTap,
+  }) : super(key: key);
+
+  final bool isEnd;
+  final GestureTapCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    const buttonSize = 58.0;
+    const padding = _horizontalDesktopPadding - buttonSize / 2;
+    return ExcludeSemantics(
+      child: Align(
+        alignment: isEnd
+            ? AlignmentDirectional.centerEnd
+            : AlignmentDirectional.centerStart,
+        child: Container(
+          width: buttonSize,
+          height: buttonSize,
+          margin: EdgeInsetsDirectional.only(
+            start: isEnd ? 0 : padding,
+            end: isEnd ? padding : 0,
+          ),
+          child: Tooltip(
+            message: isEnd
+                ? MaterialLocalizations.of(context).nextPageTooltip
+                : MaterialLocalizations.of(context).previousPageTooltip,
+            child: Material(
+              color: Colors.black.withOpacity(0.5),
+              shape: const CircleBorder(),
+              clipBehavior: Clip.antiAlias,
+              child: InkWell(
+                onTap: onTap,
+                child: Icon(
+                  isEnd ? Icons.arrow_forward_ios : Icons.arrow_back_ios,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Carousel extends StatefulWidget {
+  const Carousel({
+    Key? key,
+    required this.animationController,
+    required this.restorationId,
+    required this.children,
+  }) : super(key: key);
+
+  final AnimationController animationController;
+  final String restorationId;
+  final List<Widget> children;
+
+  @override
+  _CarouselState createState() => _CarouselState();
+}
+
+class _CarouselState extends State<Carousel>
+    with RestorationMixin, SingleTickerProviderStateMixin {
+  late PageController _controller;
+
+  final RestorableInt _currentPage = RestorableInt(0);
+
+  @override
+  String get restorationId => widget.restorationId;
+
+  @override
+  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+    registerForRestoration(_currentPage, 'carousel_page');
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // The viewPortFraction is calculated as the width of the device minus the
+    // padding.
+    final width = MediaQuery.of(context).size.width;
+    const padding = (_horizontalPadding * 2) - (_carouselItemMargin * 2);
+    _controller = PageController(
+      initialPage: _currentPage.value,
+      viewportFraction: (width - padding) / width,
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _currentPage.dispose();
+    super.dispose();
+  }
+
+  Widget builder(int index) {
+    final carouselCard = AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        double value;
+        if (_controller.position.haveDimensions) {
+          value = (_controller.page! - index);
+        } else {
+          // If haveDimensions is false, use _currentPage to calculate value.
+          value = (_currentPage.value - index).toDouble();
+        }
+        // We want the peeking cards to be 160 in height and 0.38 helps
+        // achieve that.
+        value = (1 - (value.abs() * .38)).clamp(0, 1).toDouble();
+        value = Curves.easeOut.transform(value);
+
+        return Center(
+          child: Transform(
+            transform: Matrix4.diagonal3Values(1.0, value, 1.0),
+            alignment: Alignment.center,
+            child: child,
+          ),
+        );
+      },
+      child: widget.children[index],
+    );
+
+    // We only want the second card to be animated.
+    if (index == 1) {
+      return _AnimatedCarouselCard(
+        controller: widget.animationController,
+        child: carouselCard,
+      );
+    } else {
+      return carouselCard;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _AnimatedCarousel(
+      controller: widget.animationController,
+      child: PageView.builder(
+        // Makes integration tests possible.
+        key: const ValueKey('studyDemoList'),
+        onPageChanged: (value) {
+          setState(() {
+            _currentPage.value = value;
+          });
+        },
+        controller: _controller,
+        itemCount: widget.children.length,
+        itemBuilder: (context, index) => builder(index),
+        allowImplicitScrolling: true,
+      ),
+    );
+  }
+}
+
+class _AnimatedCarouselCard extends StatelessWidget {
+  _AnimatedCarouselCard({
+    Key? key,
+    required this.child,
+    required this.controller,
+  })  : startPaddingAnimation = Tween(
+          begin: _horizontalPadding,
+          end: 0.0,
+        ).animate(
+          CurvedAnimation(
+            parent: controller,
+            curve: const Interval(
+              0.900,
+              1.000,
+              curve: Curves.ease,
+            ),
+          ),
+        ),
+        super(key: key);
+
+  final Widget child;
+  final AnimationController controller;
+  final Animation<double> startPaddingAnimation;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, child) {
+        return Padding(
+          padding: EdgeInsetsDirectional.only(
+            start: startPaddingAnimation.value,
+          ),
+          child: child,
+        );
+      },
+      child: child,
+    );
+  }
+}
+
+/// Animates the carousel to come in from the right.
+class _AnimatedCarousel extends StatelessWidget {
+  _AnimatedCarousel({
+    Key? key,
+    required this.child,
+    required this.controller,
+  })  : startPositionAnimation = Tween(
+          begin: 1.0,
+          end: 0.0,
+        ).animate(
+          CurvedAnimation(
+            parent: controller,
+            curve: const Interval(
+              0.200,
+              0.800,
+              curve: Curves.ease,
+            ),
+          ),
+        ),
+        super(key: key);
+
+  final Widget child;
+  final AnimationController controller;
+  final Animation<double> startPositionAnimation;
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      // Only display multiple columns when the constraints allow it and we
-      // have a regular text scale factor.
-      const minWidthForTwoColumns = 600;
-      final hasMultipleColumns = isDisplayDesktop(context) &&
-          constraints.maxWidth > minWidthForTwoColumns;
-
-      final boxWidth = hasMultipleColumns
-          ? constraints.maxWidth / 2 - spacing / 2
-          : double.infinity;
-
-      return Wrap(
-        runSpacing: spacing,
+      return Stack(
         children: [
-          SizedBox(
-            width: boxWidth,
-          ),
-          if (hasMultipleColumns) SizedBox(width: spacing),
-          SizedBox(
-            width: boxWidth,
+          SizedBox(height: _carouselHeightMin),
+          AnimatedBuilder(
+            animation: controller,
+            builder: (context, child) {
+              return PositionedDirectional(
+                start: constraints.maxWidth * startPositionAnimation.value,
+                child: child!,
+              );
+            },
+            child: SizedBox(
+              height: _carouselHeightMin,
+              width: constraints.maxWidth,
+              child: child,
+            ),
           ),
         ],
       );

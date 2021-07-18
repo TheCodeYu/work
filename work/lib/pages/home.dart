@@ -11,8 +11,10 @@ import 'package:work/components/label_button.dart';
 import 'package:work/components/mobile_nav.dart';
 import 'package:work/components/options_items.dart';
 import 'package:work/config/i10n.dart';
+import 'package:work/pages/login.dart';
 import 'package:work/pages/studio_page.dart';
 import 'package:work/utils/adaptive.dart';
+import 'package:work/components/dialog/about.dart' as dialog;
 
 const int tabCount = 5;
 const int turnsToRotateRight = 1;
@@ -79,6 +81,18 @@ class _HomePageState extends State<HomePage>
         });
   }
 
+  login() {
+    return BlocBuilder<DetailBloc, DetailState>(builder: (ctx, state) {
+      return MyLabel(
+        label: Text.rich(TextSpan(
+            text: state.token == null ? locale(context).register : state.name)),
+        onPressed: () {
+          Navigator.of(context).pushNamed(LoginPage.defaultRoute);
+        },
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -92,9 +106,11 @@ class _HomePageState extends State<HomePage>
       tabBarView = Column(
         children: [
           _RallyTabBar(
-              tabs: _buildTabs(context, theme),
-              tabController: _tabController,
-              language: language()),
+            tabs: _buildTabs(context, theme),
+            tabController: _tabController,
+            language: language(),
+            login: login(),
+          ),
           Expanded(
             child: TabBarView(
               controller: _tabController,
@@ -106,17 +122,64 @@ class _HomePageState extends State<HomePage>
       );
     } else {
       tabBarView = MobileNav(
-        destinations: _buildTabs(context, theme),
-        onItemTapped: _onDestinationSelected,
-        selected: _tabController.index,
-        language: language(),
-        child: Expanded(
-          child: TabBarView(
-            controller: _tabController,
-            children: _buildTabViews(),
-          ),
-        ),
-      );
+          destinations: _buildTabs(context, theme),
+          onItemTapped: _onDestinationSelected,
+          selected: _tabController.index,
+          language: language(),
+          login: login(),
+          child: Expanded(
+              child: Column(
+            children: [
+              Container(
+                decoration: new BoxDecoration(
+                  image: new DecorationImage(
+                    image: new AssetImage('images/headbg.jpg'),
+                    fit: BoxFit.cover,
+                    //这里是从assets静态文件中获取的，也可以new NetworkImage(）从网络上获取
+                  ),
+                ),
+                height: 50,
+                padding: EdgeInsets.only(bottom: 10, left: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    ///logo放这里
+                    Text(locale(context).app,
+                        style: TextStyle(
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black)),
+                    Expanded(child: SizedBox()),
+                    MyTooltip(
+                      padding: EdgeInsets.zero,
+                      message: Image.asset(
+                        'images/qrcode_344.jpg',
+                        width: 120,
+                        height: 120,
+                      ),
+                      child: MyLabel(
+                        label:
+                            Text.rich(TextSpan(text: locale(context).public)),
+                        onPressed: () {
+                          dialog.showAboutDialog(context: context);
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: _buildTabViews(),
+                ),
+              ),
+            ],
+          )));
     }
     return Scaffold(
       body: SafeArea(
@@ -234,17 +297,18 @@ class _RallyTabBar extends StatelessWidget {
       {Key? key,
       required this.tabs,
       required this.tabController,
-      required this.language})
+      required this.language,
+      required this.login})
       : super(key: key);
 
   final List<Widget> tabs;
   final TabController tabController;
   final Widget language;
-
+  final Widget login;
   @override
   Widget build(BuildContext context) {
     // print(_getLocaleOptions(context));
-    final detailBloc = BlocProvider.of<DetailBloc>(context);
+
     return FocusTraversalOrder(
       order: const NumericFocusOrder(0),
       child: Column(
@@ -293,22 +357,15 @@ class _RallyTabBar extends StatelessWidget {
                   ),
                   child: MyLabel(
                     label: Text.rich(TextSpan(text: locale(context).public)),
-                    onPressed: () {},
+                    onPressed: () {
+                      dialog.showAboutDialog(context: context);
+                    },
                   ),
                 ),
                 SizedBox(
                   width: 5,
                 ),
-                MyLabel(
-                  label: Text.rich(TextSpan(
-                      text: detailBloc.state.token == null
-                          ? locale(context).register
-                          : detailBloc.state.name)),
-                  onPressed: () {
-                    //Navigator.of(context).pushNamed(LoginPage.defaultRoute);
-                    detailBloc.add(DetailUpdateApp('wqerwqewqewqewqewer'));
-                  },
-                ),
+                login,
                 SizedBox(
                   width: 5,
                 ),

@@ -10,6 +10,32 @@
   "titleSettings": "关于风宇",
   "public": "微信公众号",
   "register": "注册/登录",
-  "copyright":"版权所有"
-
+  "copyright":"版权所有",
+  "desktop":"桌面应用",
+  "mobile":"移动应用",
+  "mini":"小程序",
+  "web":"web应用",
+  "desktop_d":"桌面应用描述",
+  "mobile_d":"移动应用描述",
+  "mini_d":"小程序描述",
+  "web_d":"web应用描述",
+  "head":"业务",
+  "githubRepo": "{repoName} GitHub 代码库",
+  "@githubRepo": {
+    "description": "Represents a link to a GitHub repository.",
+    "placeholders": {
+      "repoName": {
+        "example": "Flutter Gallery"
+      }
+    }
+  },
+  "aboutDialogDescription": "要查看此应用的源代码，请访问 {repoLink}。",
+  "@aboutDialogDescription": {
+    "description": "A description about how to view the source code for this app.",
+    "placeholders": {
+      "repoLink": {
+        "example": "Flutter Gallery GitHub repository"
+      }
+    }
+  }
 }

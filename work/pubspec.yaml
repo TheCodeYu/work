@@ -45,11 +45,7 @@ flutter:
   generate: true # 添加这一行
   assets:
     - assets/images/
-    - assets/flutter.db
-    - assets/os/images/
-    - assets/os/tools/
-
-
+    - assets/studies/
   fonts: # 配置字体，可配置多个，支持ttf和otf,ttc等字体资源
     - family: IndieFlower #字体名
       fonts:

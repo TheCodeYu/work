@@ -5,6 +5,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:work/blocs/detail/detail_bloc.dart';
 import 'package:work/components/image_placeholder.dart';
 
 import 'package:work/utils/adaptive.dart';
@@ -193,7 +195,11 @@ class _CancelAndNextButtons extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(7)),
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              BlocProvider.of<DetailBloc>(context)
+                ..add(DetailUpdateApp('wqerwqewqewqewqewer'));
+              Navigator.of(context).pop();
+            },
             child: Padding(
               padding: buttonTextPadding,
               child: Text(
