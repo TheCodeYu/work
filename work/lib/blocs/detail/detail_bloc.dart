@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:work/constants/sp.dart';
 import 'package:work/storage/app_storage.dart';
+import 'package:work/utils/https_utils.dart';
 import 'package:work/utils/log_utils.dart';
 
 part 'detail_event.dart';
@@ -27,6 +29,11 @@ class DetailBloc extends Bloc<DetailEvent, DetailState> {
     }
 
     if (event is DetailUpdateApp) {
+      FormData params = FormData.fromMap(
+          {'username': '_inputAccount', 'password': '_inputPwd'});
+      DioManager.getInstance()
+          .post('ServiceUrl.login', params, (data) {}, (error) {});
+
       await sp.setString(SP.token, event.settings);
       yield state.copyWith(token: event.settings);
     }

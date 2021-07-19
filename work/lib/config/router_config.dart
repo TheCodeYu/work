@@ -1,5 +1,5 @@
 import 'package:work/components/deferred_widget.dart';
-import 'package:work/pages/home.dart' deferred as rally;
+import 'package:work/pages/home.dart' deferred as home;
 import 'package:work/pages/home.dart';
 import 'package:work/pages/login.dart';
 import 'package:work/pages/login.dart' deferred as login;
@@ -44,7 +44,7 @@ class RouterConfig {
     Path(
       r'^' + HomePage.defaultRoute,
       (context, match) =>
-          DeferredWidget(rally.loadLibrary, () => rally.HomePage()),
+          DeferredWidget(home.loadLibrary, () => home.HomePage()),
     ),
     Path(
       r'^/',
