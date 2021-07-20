@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:work/components/carouselCard.dart';
+import 'package:work/components/footer.dart';
+import 'package:work/components/image_placeholder.dart';
 import 'package:work/config/i10n.dart';
 import 'package:work/utils/adaptive.dart';
 import 'dart:math' as math;
@@ -60,11 +62,18 @@ class _StudioPageState extends State<StudioPage> {
       ),
     ];
     if (isDesktop) {
+      //final desktopCategoryItems = [];
       return Scaffold(
           body: ListView(
         key: const ValueKey('HomeListView'),
         padding: EdgeInsetsDirectional.only(top: firstHeaderDesktopTopPadding),
         children: [
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(
+          //     horizontal: _horizontalDesktopPadding,
+          //   ),
+          //   child:
+          // ),
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: _horizontalDesktopPadding,
@@ -76,6 +85,59 @@ class _StudioPageState extends State<StudioPage> {
           SizedBox(
               height: _carouselHeightMin,
               child: _DesktopCarousel(children: carouselCards)),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: _horizontalDesktopPadding,
+            ),
+            child: Header(
+                color: Theme.of(context).colorScheme.primary,
+                text: locale(context).head),
+          ),
+          Container(
+            height: 585,
+            padding: const EdgeInsets.symmetric(
+              horizontal: _horizontalDesktopPadding,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //children: spaceBetween(28, desktopCategoryItems),
+            ),
+          ),
+          Padding(
+              padding: const EdgeInsetsDirectional.only(
+                start: _horizontalDesktopPadding,
+                bottom: 81,
+                end: _horizontalDesktopPadding,
+                top: 109,
+              ),
+              child: Row(children: [
+                FadeInImagePlaceholder(
+                  image: Theme.of(context).colorScheme.brightness ==
+                          Brightness.dark
+                      ? const AssetImage(
+                          'assets/logo/flutter_logo.png',
+                          package: 'flutter_gallery_assets',
+                        )
+                      : const AssetImage(
+                          'assets/logo/flutter_logo_color.png',
+                          package: 'flutter_gallery_assets',
+                        ),
+                  placeholder: const SizedBox.shrink(),
+                  excludeFromSemantics: true,
+                ),
+                Expanded(
+                  child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    alignment: WrapAlignment.end,
+                    children: const [
+                      SettingsAbout(),
+                      SettingsFeedback(),
+                      SettingsAttribution(),
+                    ],
+                  ),
+                ),
+              ]))
         ],
       ));
     } else {
@@ -86,6 +148,17 @@ class _StudioPageState extends State<StudioPage> {
         ),
       );
     }
+  }
+
+  List<Widget> spaceBetween(double paddingBetween, List<Widget> children) {
+    return [
+      for (int index = 0; index < children.length; index++) ...[
+        Flexible(
+          child: children[index],
+        ),
+        if (index < children.length - 1) SizedBox(width: paddingBetween),
+      ],
+    ];
   }
 }
 
