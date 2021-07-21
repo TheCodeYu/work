@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:work/blocs/detail/detail_bloc.dart';
 import 'package:work/blocs/global/global_bloc.dart';
 import 'package:work/components/button/my_tool_tip.dart';
+import 'package:work/components/dialog/about.dart' as dialog;
 import 'package:work/components/icp.dart';
 import 'package:work/components/label_button.dart';
 import 'package:work/components/mobile_nav.dart';
@@ -14,7 +15,6 @@ import 'package:work/config/i10n.dart';
 import 'package:work/pages/login.dart';
 import 'package:work/pages/studio_page.dart';
 import 'package:work/utils/adaptive.dart';
-import 'package:work/components/dialog/about.dart' as dialog;
 
 const int tabCount = 5;
 const int turnsToRotateRight = 1;
@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
-
+    BlocProvider.of<GlobalBloc>(context).add(EventIntoHome());
     _tabController = TabController(length: tabCount, vsync: this)
       ..addListener(() {
         // Set state to make sure that the [_RallyTab] widgets get updated when changing tabs.
@@ -151,6 +151,7 @@ class _HomePageState extends State<HomePage>
                             fontWeight: FontWeight.bold,
                             color: Colors.black)),
                     Expanded(child: SizedBox()),
+
                     MyTooltip(
                       padding: EdgeInsets.zero,
                       message: Image.asset(

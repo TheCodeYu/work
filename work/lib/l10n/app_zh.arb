@@ -9,6 +9,7 @@
   "titleBudgets": "资料与下载",
   "titleSettings": "关于风宇",
   "public": "微信公众号",
+  "wechat": "工作微信",
   "register": "注册/登录",
   "copyright":"版权所有",
   "desktop":"桌面应用",
@@ -20,6 +21,9 @@
   "mini_d":"小程序描述",
   "web_d":"web应用描述",
   "head":"业务",
+  "settingsAbout": "关于 Flutter Gallery",
+  "settingsFeedback": "发送反馈",
+  "settingsAttribution": "由伦敦的 TOASTER 设计",
   "githubRepo": "{repoName} GitHub 代码库",
   "@githubRepo": {
     "description": "Represents a link to a GitHub repository.",

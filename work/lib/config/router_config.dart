@@ -1,12 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:work/components/deferred_widget.dart';
 import 'package:work/pages/home.dart' deferred as home;
-import 'package:work/pages/home.dart';
 import 'package:work/pages/login.dart';
 import 'package:work/pages/login.dart' deferred as login;
-import 'package:work/pages/splash/splash.dart';
 import 'package:work/utils/adaptive.dart';
 import 'package:work/utils/log_utils.dart';
-import 'package:flutter/material.dart';
 
 /// description:路由配置信息路由拦截
 ///
@@ -42,14 +40,14 @@ class RouterConfig {
           DeferredWidget(login.loadLibrary, () => login.LoginPage()),
     ),
     Path(
-      r'^' + HomePage.defaultRoute,
+      r'^/', // + HomePage.defaultRoute
       (context, match) =>
           DeferredWidget(home.loadLibrary, () => home.HomePage()),
     ),
-    Path(
-      r'^/',
-      (context, match) => const Splash(),
-    ),
+    // Path(
+    //   r'^/',
+    //   (context, match) => const Splash(),
+    // ),
   ];
 
   /// 路由拦截器,可以做些权限控制，比如token检查

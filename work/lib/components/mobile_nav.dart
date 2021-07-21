@@ -1,3 +1,4 @@
+//import 'dart:html' as html;
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
@@ -99,8 +100,6 @@ class _MobileNavState extends State<MobileNav> with TickerProviderStateMixin {
     _bottomAppBarController.dispose();
     super.dispose();
   }
-
-  bool onSearchPage = false;
 
   bool _handleScrollNotification(ScrollNotification notification) {
     if (notification.depth == 0) {
@@ -237,31 +236,43 @@ class _MobileNavState extends State<MobileNav> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return _SharedAxisTransitionSwitcher(
-      defaultChild: Scaffold(
-        extendBody: true,
-        body: LayoutBuilder(
-          builder: _buildStack,
-        ),
-        bottomNavigationBar: _AnimatedBottomAppBar(
-            bottomAppBarController: _bottomAppBarController,
-            bottomAppBarCurve: _bottomAppBarCurve,
-            bottomDrawerVisible: _bottomDrawerVisible,
-            dropArrowCurve: _dropArrowCurve,
-            drawerController: _drawerController,
-            navigationDestinations: widget.destinations,
-            selected: widget.selected,
-            toggleBottomDrawerVisibility: _toggleBottomDrawerVisibility,
-            language: widget.language,
-            login: widget.login),
-        floatingActionButton: _bottomDrawerVisible
-            ? null
-            : const Padding(
-                padding: EdgeInsetsDirectional.only(bottom: 8),
-                child: _ReplyFab(),
-              ),
+        defaultChild: Scaffold(
+      extendBody: true,
+      body: LayoutBuilder(
+        builder: _buildStack,
       ),
-      onSearchPage: onSearchPage,
-    );
+      bottomNavigationBar: _AnimatedBottomAppBar(
+          bottomAppBarController: _bottomAppBarController,
+          bottomAppBarCurve: _bottomAppBarCurve,
+          bottomDrawerVisible: _bottomDrawerVisible,
+          dropArrowCurve: _dropArrowCurve,
+          drawerController: _drawerController,
+          navigationDestinations: widget.destinations,
+          selected: widget.selected,
+          toggleBottomDrawerVisibility: _toggleBottomDrawerVisibility,
+          language: widget.language,
+          login: widget.login),
+      floatingActionButton: _bottomDrawerVisible
+          ? null
+          : Padding(
+              padding: EdgeInsetsDirectional.only(bottom: 8),
+              child: const _ReplyFab()
+              // MyTooltip(
+              //   message: FadeInImagePlaceholder(
+              //     height: 240,
+              //     image: const AssetImage('assets/images/IMG_4884.png'),
+              //     placeholder: const SizedBox.shrink(),
+              //     excludeFromSemantics: true,
+              //   ),
+              //   padding: EdgeInsets.zero,
+              //   child: MyLabel(
+              //     label:
+              //     Text.rich(TextSpan(text: locale(context).wechat)),
+              //     onPressed: () {},
+              //   ),
+              // )
+              ),
+    ));
   }
 }
 
@@ -325,7 +336,18 @@ class _ReplyFabState extends State<_ReplyFab>
     with SingleTickerProviderStateMixin {
   static const double _mobileFabDimension = 56;
 
-  void onPressed() {}
+  @override
+  void initState() {
+    // html.window.onBeforeUnload.listen((event) async {
+    //   html.window.alert("qwe");
+    //   print("ss:${event.type}");
+    // });
+    // html.window.onUnload.listen((event) async {
+    //   html.window.confirm("qwe");
+    //   print("dd:${event.type}");
+    // });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -334,7 +356,9 @@ class _ReplyFabState extends State<_ReplyFab>
 
     return OpenContainer(
       openBuilder: (context, closedContainer) {
-        return const TTT(t: "111");
+        return Scaffold(
+          backgroundColor: Colors.transparent,
+        );
       },
       openColor: theme.cardColor,
       closedShape: circleFabBorder,
@@ -352,10 +376,9 @@ class _ReplyFabState extends State<_ReplyFab>
               width: _mobileFabDimension,
               child: Center(
                 child: _FadeThroughTransitionSwitcher(
-                  fillColor: Colors.transparent,
-                  child: const Icon(
-                    Icons.create,
-                    color: Colors.black,
+                  fillColor: Colors.white,
+                  child: Image.asset(
+                    'assets/images/work.jpg',
                   ),
                 ),
               ),
@@ -370,16 +393,13 @@ class _ReplyFabState extends State<_ReplyFab>
 class _SharedAxisTransitionSwitcher extends StatelessWidget {
   const _SharedAxisTransitionSwitcher({
     required this.defaultChild,
-    required this.onSearchPage,
   });
 
   final Widget defaultChild;
 
-  final bool onSearchPage;
   @override
   Widget build(BuildContext context) {
     return PageTransitionSwitcher(
-      reverse: !onSearchPage,
       transitionBuilder: (child, animation, secondaryAnimation) {
         return SharedAxisTransition(
           animation: animation,
@@ -388,7 +408,7 @@ class _SharedAxisTransitionSwitcher extends StatelessWidget {
           child: child,
         );
       },
-      child: onSearchPage ? const SearchPage() : defaultChild,
+      child: defaultChild,
     );
   }
 }
@@ -522,17 +542,6 @@ class _AnimatedBottomAppBar extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class SearchPage extends StatelessWidget {
-  const SearchPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Text('search'),
     );
   }
 }

@@ -9,6 +9,7 @@
   "titleBudgets": "Information and Download",
   "titleSettings": "About Fengyu",
   "public": "WeChat Official Account",
+  "wechat": "WeChat",
   "register": "Register and Sign in",
   "copyright":"all rights reserved",
   "desktop":"desktop",
@@ -20,6 +21,9 @@
   "mini_d":"mini_d",
   "web_d":"web_d",
   "head":"server",
+  "settingsAbout": "About Flutter Gallery",
+  "settingsFeedback": "Send feedback",
+  "settingsAttribution": "Designed by TOASTER in London",
   "githubRepo": "{repoName} GitHub repository",
   "aboutDialogDescription": "To see the source code for this app, please visit the {repoLink}."
 }

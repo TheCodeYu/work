@@ -7,6 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import "package:universal_html/html.dart" as html;
 import 'package:url_strategy/url_strategy.dart';
 import 'package:work/blocs/bloc_wrapper.dart';
 import 'package:work/blocs/global/global_bloc.dart';
@@ -18,6 +19,12 @@ import 'constants/my_theme.dart';
 main() {
   setPathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
+  final div = html.BodyElement();
+  div.append(html.Element.tag("img")
+    ..classes.add("greeting")
+    ..setAttribute('src', 'value'));
+  print(div.outerHtml);
+  print(div.querySelector('body > .greeting')!.getAttribute('src'));
   runApp(BlocWrapper(MyApp()));
 }
 

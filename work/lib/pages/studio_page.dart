@@ -1,16 +1,21 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:work/components/carouselCard.dart';
+import 'package:work/components/category_item.dart';
 import 'package:work/components/footer.dart';
 import 'package:work/components/image_placeholder.dart';
 import 'package:work/config/i10n.dart';
+import 'package:work/model/data.dart';
 import 'package:work/utils/adaptive.dart';
-import 'dart:math' as math;
 
 const _horizontalPadding = 32.0;
 const _carouselItemMargin = 8.0;
 const _horizontalDesktopPadding = 81.0;
 const _carouselHeightMin = 200.0 + 2 * _carouselItemMargin;
 const _desktopCardsPerPage = 4;
+
+class ToggleSplashNotification extends Notification {}
 
 ///首页
 ///
@@ -62,18 +67,32 @@ class _StudioPageState extends State<StudioPage> {
       ),
     ];
     if (isDesktop) {
-      //final desktopCategoryItems = [];
+      final desktopCategoryItems = <_DesktopCategoryItem>[
+        _DesktopCategoryItem(
+          category: CategoryData.material,
+          asset: const AssetImage(
+            'assets/images/material.png',
+          ),
+          data: [],
+        ),
+        _DesktopCategoryItem(
+          category: CategoryData.cupertino,
+          asset: const AssetImage(
+            'assets/images/material.png',
+          ),
+          data: [],
+        ),
+        _DesktopCategoryItem(
+          category: CategoryData.other,
+          asset: const AssetImage('assets/images/material.png'),
+          data: [],
+        ),
+      ];
       return Scaffold(
           body: ListView(
         key: const ValueKey('HomeListView'),
         padding: EdgeInsetsDirectional.only(top: firstHeaderDesktopTopPadding),
         children: [
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(
-          //     horizontal: _horizontalDesktopPadding,
-          //   ),
-          //   child:
-          // ),
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: _horizontalDesktopPadding,
@@ -101,7 +120,7 @@ class _StudioPageState extends State<StudioPage> {
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //children: spaceBetween(28, desktopCategoryItems),
+              children: spaceBetween(28, desktopCategoryItems),
             ),
           ),
           Padding(
@@ -112,20 +131,6 @@ class _StudioPageState extends State<StudioPage> {
                 top: 109,
               ),
               child: Row(children: [
-                FadeInImagePlaceholder(
-                  image: Theme.of(context).colorScheme.brightness ==
-                          Brightness.dark
-                      ? const AssetImage(
-                          'assets/logo/flutter_logo.png',
-                          package: 'flutter_gallery_assets',
-                        )
-                      : const AssetImage(
-                          'assets/logo/flutter_logo_color.png',
-                          package: 'flutter_gallery_assets',
-                        ),
-                  placeholder: const SizedBox.shrink(),
-                  excludeFromSemantics: true,
-                ),
                 Expanded(
                   child: Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
@@ -159,6 +164,106 @@ class _StudioPageState extends State<StudioPage> {
         if (index < children.length - 1) SizedBox(width: paddingBetween),
       ],
     ];
+  }
+}
+
+class _DesktopCategoryItem extends StatelessWidget {
+  const _DesktopCategoryItem({
+    required this.category,
+    required this.asset,
+    required this.data,
+  });
+  final CategoryData category;
+  final ImageProvider asset;
+  final List<Data> data;
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Material(
+      borderRadius: BorderRadius.circular(10),
+      clipBehavior: Clip.antiAlias,
+      color: colorScheme.surface,
+      child: Semantics(
+        container: true,
+        child: FocusTraversalGroup(
+          policy: WidgetOrderTraversalPolicy(),
+          child: Column(
+            children: [
+              _DesktopCategoryHeader(
+                category: category,
+                asset: asset,
+              ),
+              Divider(
+                height: 2,
+                thickness: 2,
+                color: colorScheme.background,
+              ),
+              Flexible(
+                child: ListView.builder(
+                  // Makes integration tests possible.
+                  key: ValueKey('${category.name}DemoList'),
+                  itemBuilder: (context, index) =>
+                      CategoryItem(data: data[index]),
+                  itemCount: data.length,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DesktopCategoryHeader extends StatelessWidget {
+  const _DesktopCategoryHeader({
+    required this.category,
+    required this.asset,
+  });
+  final CategoryData category;
+  final ImageProvider asset;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Material(
+      // Makes integration tests possible.
+      key: ValueKey('${category.name}CategoryHeader'),
+      color: colorScheme.onBackground,
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: FadeInImagePlaceholder(
+              image: asset,
+              placeholder: const SizedBox(
+                height: 64,
+                width: 64,
+              ),
+              width: 64,
+              height: 64,
+              excludeFromSemantics: true,
+            ),
+          ),
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsetsDirectional.only(start: 8),
+              child: Semantics(
+                header: true,
+                child: Text(
+                  category.displayTitle(locale(context)),
+                  style: Theme.of(context).textTheme.headline5?.apply(
+                        color: colorScheme.onSurface,
+                      ),
+                  maxLines: 4,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -217,7 +322,79 @@ class _AnimatedHomePageState extends State<_AnimatedHomePage>
               restorationId: 'home_carousel',
               children: widget.carouselCards,
             ),
-          ])
+            Container(
+              margin:
+                  const EdgeInsets.symmetric(horizontal: _horizontalPadding),
+              child: Header(
+                  color: Theme.of(context).colorScheme.primary,
+                  text: locale(context).head),
+            ),
+            _AnimatedCategoryItem(
+              startDelayFraction: 0.00,
+              controller: _animationController,
+              child: CategoryListItem(
+                  key: const PageStorageKey<CategoryData>(
+                    CategoryData.material,
+                  ),
+                  restorationId: 'home_material_category_list',
+                  category: CategoryData.material,
+                  imageString: 'assets/images/material.png',
+                  data: [],
+                  initiallyExpanded: _isMaterialListExpanded.value,
+                  onTap: (shouldOpenList) {
+                    _isMaterialListExpanded.value = shouldOpenList;
+                  }),
+            ),
+            _AnimatedCategoryItem(
+              startDelayFraction: 0.05,
+              controller: _animationController,
+              child: CategoryListItem(
+                  key: const PageStorageKey<CategoryData>(
+                    CategoryData.cupertino,
+                  ),
+                  restorationId: 'home_cupertino_category_list',
+                  category: CategoryData.cupertino,
+                  imageString: 'assets/images/material.png',
+                  data: [],
+                  initiallyExpanded: _isCupertinoListExpanded.value,
+                  onTap: (shouldOpenList) {
+                    _isCupertinoListExpanded.value = shouldOpenList;
+                  }),
+            ),
+            _AnimatedCategoryItem(
+              startDelayFraction: 0.10,
+              controller: _animationController,
+              child: CategoryListItem(
+                  key: const PageStorageKey<CategoryData>(
+                    CategoryData.other,
+                  ),
+                  restorationId: 'home_other_category_list',
+                  category: CategoryData.other,
+                  imageString: 'assets/images/material.png',
+                  data: [],
+                  initiallyExpanded: _isOtherListExpanded.value,
+                  onTap: (shouldOpenList) {
+                    _isOtherListExpanded.value = shouldOpenList;
+                  }),
+            ),
+          ]),
+      Align(
+        alignment: Alignment.topCenter,
+        child: GestureDetector(
+          onVerticalDragEnd: (details) {
+            if (details.velocity.pixelsPerSecond.dy > 200) {
+              ToggleSplashNotification().dispatch(context);
+            }
+          },
+          child: SafeArea(
+            child: Container(
+              height: 40,
+              // If we don't set the color, gestures are not detected.
+              color: Colors.transparent,
+            ),
+          ),
+        ),
+      ),
     ]);
   }
 
@@ -229,6 +406,49 @@ class _AnimatedHomePageState extends State<_AnimatedHomePage>
     registerForRestoration(_isMaterialListExpanded, 'material_list');
     registerForRestoration(_isCupertinoListExpanded, 'cupertino_list');
     registerForRestoration(_isOtherListExpanded, 'other_list');
+  }
+}
+
+/// Animates the category item to stagger in. The [_AnimatedCategoryItem.startDelayFraction]
+/// gives a delay in the unit of a fraction of the whole animation duration,
+/// which is defined in [_AnimatedHomePageState].
+class _AnimatedCategoryItem extends StatelessWidget {
+  _AnimatedCategoryItem({
+    Key? key,
+    required double startDelayFraction,
+    required this.controller,
+    required this.child,
+  })  : topPaddingAnimation = Tween(
+          begin: 60.0,
+          end: 0.0,
+        ).animate(
+          CurvedAnimation(
+            parent: controller,
+            curve: Interval(
+              0.000 + startDelayFraction,
+              0.400 + startDelayFraction,
+              curve: Curves.ease,
+            ),
+          ),
+        ),
+        super(key: key);
+
+  final Widget child;
+  final AnimationController controller;
+  final Animation<double> topPaddingAnimation;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, child) {
+        return Padding(
+          padding: EdgeInsets.only(top: topPaddingAnimation.value),
+          child: child,
+        );
+      },
+      child: child,
+    );
   }
 }
 
