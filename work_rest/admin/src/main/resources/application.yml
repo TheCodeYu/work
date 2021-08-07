@@ -14,7 +14,7 @@ work:
   # 验证码类型 math 数组计算 char 字符验证
   captchaType: math
   icp: 鄂ICP备2021012206号
-  police: 鄂ICP备2021012206号
+  police: 鄂ICP备42018502005304号
 
 
 # 插件的配置
@@ -100,7 +100,7 @@ spring:
     # 数据库索引
     database: 0
     # 密码
-    password: 123456
+    password:
     # 连接超时时间
     timeout: 10s
     lettuce:
@@ -119,7 +119,7 @@ spring:
     druid:
       # 主库数据源
       master:
-        url: jdbc:mysql://localhost:3306/work?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+        url: jdbc:mysql://localhost:3306/paper?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
         username: root
         password: 123456
       # 从库数据源

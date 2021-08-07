@@ -5,6 +5,7 @@ import com.mychip.work.constant.UserStatus;
 import com.mychip.work.core.domain.LoginUser;
 import com.mychip.work.core.domain.entity.SysUser;
 import com.mychip.work.exception.BaseException;
+import com.mychip.work.system.service.ISysUserService;
 import com.mychip.work.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,14 +25,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private static final Logger log = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
-//    @Autowired
-//    private UserService userService;
+    @Autowired
+    private ISysUserService userService;
 
+    @Autowired
+    private SysPermissionService permissionService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        JSONObject jsonObject = JSONObject.parseObject(username);
-        SysUser user = null;// = userService.selectUserByUserName(jsonObject.get("username").toString());
+
+        SysUser user = userService.selectUserByUserName(username);
 
         if (StringUtils.isNull(user))
         {
@@ -54,7 +57,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public UserDetails createLoginUser(SysUser user)
     {
-        return new LoginUser(user, null);
+        return new LoginUser(user, permissionService.getMenuPermission(user));
     }
 }
 

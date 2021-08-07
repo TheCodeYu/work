@@ -20,10 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 /**
- * name: TokenService
- * author: Administrator
- * data: 2021/7/11 0011
- * description: token验证处理
+ * @name: TokenService
+ * @author: Administrator
+ * @data: 2021/7/11 0011
+ * @description: token验证处理
  */
 @Component
 public class TokenService {
