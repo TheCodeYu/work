@@ -28,11 +28,7 @@ public class UserInfoController extends BaseController {
 
     @Autowired
     private TokenService tokenService;
-    @Autowired
-    private ISysMenuService menuService;
 
-    @Autowired
-    private SysPermissionService permissionService;
     /**
      * 获取用户信息
      * 后端校验权限，不用传递到前端
@@ -44,15 +40,8 @@ public class UserInfoController extends BaseController {
     {
         LoginUser loginUser = tokenService.getLoginUser(ServletUtils.getRequest());
         SysUser user = loginUser.getUser();
-        // 角色集合
-        //Set<String> roles = permissionService.getRolePermission(user);
-        // 权限集合
-        //Set<String> permissions = permissionService.getMenuPermission(user);
         AjaxResult ajax = AjaxResult.success();
         ajax.put("user", user);
-
-//        ajax.put("roles", roles);
-//        ajax.put("permissions", permissions);
         return ajax;
     }
 }

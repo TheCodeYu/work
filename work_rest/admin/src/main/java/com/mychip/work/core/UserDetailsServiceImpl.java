@@ -52,12 +52,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new BaseException("对不起，您的账号：" + username + " 已停用");
         }
 
-        return createLoginUser(user);
-    }
-
-    public UserDetails createLoginUser(SysUser user)
-    {
         return new LoginUser(user, permissionService.getMenuPermission(user));
     }
+
 }
 
