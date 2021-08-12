@@ -12,4 +12,13 @@ Content-Type: application/json
   "uuid":23123
 }
 ###
-POST 
+GET http://localhost:8080/anonymous/sendSMSCode/v1/15952008245
+HEAD :
+Content-Type: application/json
+
+{
+  "username":"admin",
+  "password":"admin123",
+  "code":56,
+  "uuid":23123
+}
