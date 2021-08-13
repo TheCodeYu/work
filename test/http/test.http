@@ -22,3 +22,24 @@ Content-Type: application/json
   "code":56,
   "uuid":23123
 }
+
+###
+GET http://localhost:8080/anonymous/pushAll/v1
+HEAD :
+Content-Type: application/json
+
+{
+  "username":"admin",
+  "password":"admin123",
+  "code":56,
+  "uuid":23123
+}
+###
+GET http://localhost:8080/anonymous/sendValidSMSCode/v1
+HEAD :
+Content-Type: application/json
+
+{
+  "phone":"343211245856768",
+  "code":"685759",
+}

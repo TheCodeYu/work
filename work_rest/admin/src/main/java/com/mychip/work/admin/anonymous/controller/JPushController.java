@@ -2,6 +2,9 @@ package com.mychip.work.admin.anonymous.controller;
 
 import cn.jiguang.common.resp.APIConnectionException;
 import cn.jiguang.common.resp.APIRequestException;
+import cn.jpush.api.JPushClient;
+import cn.jpush.api.push.PushResult;
+import cn.jpush.api.push.model.PushPayload;
 import cn.jsms.api.SendSMSResult;
 import cn.jsms.api.ValidSMSResult;
 import cn.jsms.api.common.SMSClient;
@@ -14,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+
+import static cn.jpush.api.push.model.notification.PlatformNotification.ALERT;
 
 /**
  * @name: JPushController
@@ -30,14 +35,17 @@ public class JPushController extends BaseController {
     @Autowired
     private SMSClient smsClient;
 
+    @Autowired
+    private JPushClient jPushClient;
     //验证码
     @GetMapping("/sendSMSCode/v1/{telephone}")
     public AjaxResult sendSMSCode(@PathVariable(value = "telephone") String telephone) {
 
         AjaxResult ajax = AjaxResult.success();
         SMSPayload payload = SMSPayload.newBuilder()
-                .setMobileNumber("13800138000")
+                .setMobileNumber(telephone)
                 .setTempId(1)
+                .setSignId(19883)
                 .build();
         try {
             SendSMSResult res = smsClient.sendSMSCode(payload);
@@ -58,7 +66,7 @@ public class JPushController extends BaseController {
     public AjaxResult sendValidSMSCode(String phone,String code) {
         AjaxResult ajax = AjaxResult.success();
         try {
-            ValidSMSResult res = smsClient.sendValidSMSCode(phone, code);
+            ValidSMSResult res = smsClient.sendValidSMSCode("343211245856768", "685759");
             System.out.println(res.toString());
             log.info(res.toString());
         } catch (APIConnectionException e) {
@@ -78,4 +86,26 @@ public class JPushController extends BaseController {
         return ajax;
     }
 
+    @GetMapping("/pushAll/v1")
+    public AjaxResult pushAll(){
+        AjaxResult ajax = AjaxResult.success();
+        PushPayload payload = PushPayload.alertAll(ALERT);
+
+        try {
+            PushResult result = jPushClient.sendPush(payload);
+            log.info("Got result - " + result);
+
+        } catch (APIConnectionException e) {
+            // Connection error, should retry later
+            log.error("Connection error, should retry later", e);
+
+        } catch (APIRequestException e) {
+            // Should review the error, and fix the request
+            log.error("Should review the error, and fix the request", e);
+            log.info("HTTP Status: " + e.getStatus());
+            log.info("Error Code: " + e.getErrorCode());
+            log.info("Error Message: " + e.getErrorMessage());
+        }
+        return ajax;
+    }
 }

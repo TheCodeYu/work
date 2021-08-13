@@ -2,6 +2,8 @@
 
 package com.mychip.work.config;
 
+import cn.jiguang.common.ClientConfig;
+import cn.jpush.api.JPushClient;
 import cn.jsms.api.common.SMSClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +20,10 @@ public class JPushConfig {
     private static final String masterSecret = "69d79d5bcf4a196558cfe479";
 
     @Bean
-    public SMSClient get(){
+    public SMSClient getSMS(){
         return new SMSClient(masterSecret, appkey);
     }
+
+    @Bean
+    public JPushClient getJPush(){return  new JPushClient(masterSecret, appkey, null, ClientConfig.getInstance());}
 }
