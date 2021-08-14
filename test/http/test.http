@@ -43,3 +43,19 @@ Content-Type: application/json
   "phone":"343211245856768",
   "code":"685759",
 }
+
+### 
+GET http://localhost:8080/anonymous/common/download?fileName=123.txt
+HEAD :
+Content-Type: application/json
+
+###
+GET http://localhost:8080/anonymous/system/server
+HEAD :
+Content-Type: application/json
+
+
+###
+GET http://localhost:8080/anonymous/system/cache
+HEAD :
+Content-Type: application/json
